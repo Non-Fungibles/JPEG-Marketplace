@@ -1,4 +1,4 @@
-/**********************
+/* *********************
 FORMS
 ***********************/
 
@@ -58,14 +58,14 @@ FORMS
 .form button {
   height: 35px;
   border-radius: 5px;
-  border: 1px solid black;
-  background: #5585b5;
+  border: 1px solid rgb(185, 156, 156);
   color: white;
 }
 
 .form button:hover {
   cursor: pointer;
-  background: #005792;
+  background: rgb(85, 76, 76);
+  /* background: #005792; */
 }
 
 #register, #sign-in {
