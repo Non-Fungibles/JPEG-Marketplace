@@ -29,13 +29,13 @@ router.post(
 );
 
 //this route will log out the user
-// router.delete(
-// 	'/logout',
-// 	cookieController.deleteCookie,
-// 	(req, res) => {
-//     return res.status(200);
-//   }
-// )
+router.delete(
+	'/logout',
+	cookieController.deleteCookie,
+	(req, res) => {
+    return res.status(200).json(res.locals.status);
+  }
+)
 
 
 //retrieves all NFT's that belong to a certain user upon successful sign in.
