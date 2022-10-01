@@ -4,7 +4,7 @@ const apiController = {};
 
 //middleware for getting NFT's on the marketplace
 apiController.getMarket = (req, res, next) => {
-  const queryString = 'SELECT * FROM nfts WHERE status = false';
+  const queryString = 'SELECT * FROM nfts WHERE status = true';
   db.query(queryString)
     .then((result) => {
       console.log(result);
@@ -22,20 +22,20 @@ apiController.getMarket = (req, res, next) => {
 
 apiController.sellNFT = async (req, res, next) => {
   //this is where we set the status of said nft to true;
-  
-  const { nfts_id, user_id, price, status  } = req.body; //user should be an object from frontend
+
+  const { nfts_id, user_id, price, status } = req.body; //user should be an object from frontend
 
   const param = [nfts_id, user_id, price, status];
 
-  try{
-  const sellQuery = `UPDATE nfts 
+  try {
+    const sellQuery = `UPDATE nfts 
   SET status = $4, user_id = $2, price = $3 
   WHERE nfts_id = $1`;
-  
-  const updatedNFTowner = await de.query(sellQuery,param)
-  res.locals.data = updatedNFTowner
-  return next()
-  }catch (error) {
+
+    const updatedNFTowner = await de.query(sellQuery, param);
+    res.locals.data = updatedNFTowner;
+    return next();
+  } catch (error) {
     return next({
       log: 'Express error in apiController.sellNFT middleware',
       status: 400,
@@ -43,6 +43,7 @@ apiController.sellNFT = async (req, res, next) => {
         err: `apiController.sellNFT: ERROR: ${error}`,
       },
     });
+  }
 };
 
 apiController.stopSellNFT = (req, res, next) => {
@@ -59,67 +60,3 @@ apiController.addNFT = (req, res, next) => {
 apiController.getPersonalNFT = (req, res, next) => {};
 
 module.exports = apiController;
-
-// dataController.storeData = (req, res, next) => {
-//     const {
-//       homeValue,
-//       downPayment,
-//       loanAmount,
-//       interestRate,
-//       loanTerm,
-//       monthlyPayment,
-//       username,
-//     } = req.body; //user should be an object from frontend
-//     const param = [
-//       homeValue,
-//       downPayment,
-//       loanAmount,
-//       interestRate,
-//       loanTerm,
-//       monthlyPayment,
-//       username,
-//     ];
-//     try {
-//       const dataQuery = `
-//       INSERT INTO homedata(homeValue,downPayment,loanAmount,interestRate,loanTerm,payment,username)
-//       VALUES($1,$2,$3,$4,$5,$6,$7)
-//       RETURNING *;
-//       `;
-//       db.query(dataQuery, param)
-//         .then((data) => {
-//           console.log(data);
-//         })
-//         .then(next());
-//     } catch (error) {
-//       return next({
-//         log: 'Express error in createUser middleware',
-//         status: 400,
-//         message: {
-//           err: `dataController.storeData: ERROR: ${error}`,
-//         },
-//       });
-//     }
-//   };
-
-//   dataController.getUserData = (req, res, next) => {
-//     try {
-//       const user = req.body.username;
-
-//       const getUserDataQuery = `
-//       SELECT * FROM homedata
-//       WHERE username = '${user}'`;
-//       db.query(getUserDataQuery).then((data) => {
-//         res.locals.list = data.rows;
-//         console.log(data.rows);
-//         return next();
-//       });
-//     } catch (error) {
-//       return next({
-//         log: 'Express error in createUser middleware',
-//         status: 400,
-//         message: {
-//           err: `dataController.getUserData : ERROR: ${error}`,
-//         },
-//       });
-//     }
-//   };
