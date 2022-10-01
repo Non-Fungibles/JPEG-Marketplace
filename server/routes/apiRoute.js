@@ -43,4 +43,6 @@ router.post(
   }
 );
 
+
+router.post('/uploadData')
 module.exports = router;
