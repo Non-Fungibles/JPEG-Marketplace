@@ -4,24 +4,24 @@ const db = require('../models/dbModels');
 const userController = {};
 
 //create user
-userController.createUser = (req, res, next) => {
+userController.createUser = async (req, res, next) => {
   const { username, password, money } = req.body; //user should be an object from frontend
 
   const param = [username, password, money];
-  const existingUser = { status: false };
+
   try {
+    //push the data into DB
     const newCharQuery = `
     INSERT INTO users(username, password, money)
     VALUES($1,$2, $3)
     RETURNING *;
     `;
-    db.query(newCharQuery, param)
-      .then((data) => {
-        console.log(data);
 
-        res.locals.user = data.rows[0].name;
-      })
-      .then(next());
+    const result = await db.query(newCharQuery, param);
+
+    res.locals.status = { status: true, message: 'account has been created!' };
+
+    return next();
   } catch (error) {
     return next({
       log: 'Express error in createUser middleware',
@@ -33,31 +33,68 @@ userController.createUser = (req, res, next) => {
   }
 };
 
-userController.verifyUser = (req, res, next) => {
-  const usernameV = req.body.username;
-  const passwordV = req.body.password;
-  const auth = { status: false };
+// Sign up route: check if user already exists in database
+userController.vertifyUser = async (req, res, next) => {
+  const { username } = req.body;
+
+  const param = [username];
+
   try {
-    const newNameQuery = `
-    SELECT * FROM users 
-    WHERE name = '${usernameV}'
-    `;
-    db.query(newNameQuery).then((data) => {
-      //console.log(data.rows[0].password, passwordV);
-      if (data.rows[0].password === passwordV) {
-        console.log(data.rows[0].password);
-        auth.status = true;
-      }
-      res.locals.auth = auth;
-      //    console.log(res.locals.auth)
+    // Find user in database
+    const verifyUserQuery = `
+    SELECT * FROM users
+    WHERE username = $1`;
+
+    // Query result
+    const verifyResult = await db.query(verifyUserQuery, param);
+
+    // User does not exist in database
+    if (verifyResult.rows.length === 0) {
+      // proceed to next middleware to create user
       return next();
-    });
+    } else {
+      // User exists in database
+      // Terminate middleware and send back error message to client
+      return res
+        .status(404)
+        .json({ status: false, message: 'Username already existed!' });
+    }
   } catch (error) {
     return next({
-      log: 'Express error in createUser middleware',
+      log: 'Express error in vertifyUser middleware',
       status: 400,
       message: {
         err: `userController.verifyUser: ERROR: ${error}`,
+      },
+    });
+  }
+};
+
+userController.loginUser = async (req, res, next) => {
+  const { username, password } = req.body;
+
+  const param = [username];
+
+  try {
+    const newNameQuery = `
+    SELECT * FROM users 
+    WHERE username = $1
+    `;
+    const data = await db.query(newNameQuery, param);
+    //if the password matches
+    if (data.rows[0].password === password) {
+      res.locals.status = { status: true, message: 'Successful Login!' };
+    } else {
+      res.locals.status = { status: false, message: 'Wrong Password!' };
+    }
+
+    return next();
+  } catch (error) {
+    return next({
+      log: 'Express error in userController.loginUser middleware',
+      status: 400,
+      message: {
+        err: `userController.loginUser: ERROR: ${error}`,
       },
     });
   }
