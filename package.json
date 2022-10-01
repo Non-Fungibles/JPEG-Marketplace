@@ -20,8 +20,10 @@
   },
   "homepage": "https://github.com/Yeti-Crabz/JPEG-Marketplace#readme",
   "dependencies": {
+    "assert": "^2.0.0",
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
+    "buffer": "^6.0.3",
     "colors": "^1.4.0",
     "concurrently": "^7.4.0",
     "cors": "^2.8.5",
