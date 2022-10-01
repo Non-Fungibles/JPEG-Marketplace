@@ -1,0 +1,34 @@
+/* .default-container {
+  position: relative;
+  overflow: hidden;
+} */
+
+.marketplace h1 {
+  color: aliceblue;
+  margin-left: 20px;
+}
+
+.marketplace h2 {
+  color: aliceblue;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.default-display {
+  display: flex;
+  background: #202225;
+  border: 1px white solid;
+  border-radius: 10px;
+  overflow-x: scroll;
+  padding: 30px;
+  margin: 40px 20px;
+}
+
+.market-display {
+  display: flex;
+  border: 1px white solid;
+  border-radius: 10px;
+  overflow-x: scroll;
+  padding: 30px;
+  margin: 40px 20px;
+}
