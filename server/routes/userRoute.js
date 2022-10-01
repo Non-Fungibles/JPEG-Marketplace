@@ -33,7 +33,7 @@ router.delete(
 	'/logout',
 	cookieController.deleteCookie,
 	(req, res) => {
-    return res.status(200);
+    return res.status(200).json(res.locals.status);
   }
 )
 
