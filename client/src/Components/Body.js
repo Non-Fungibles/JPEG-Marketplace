@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import "../styles/body.css";
 
 function Body() {
   // arr to store initial nfts displayed on home render
@@ -14,6 +15,13 @@ function Body() {
     "https://img.seadn.io/files/d0436c5651fda70ba89eaf779735e104.png?fit=max&w=2000",
     "https://img.seadn.io/files/1c2d56012acc4db270819ac0acb8c63c.png?fit=max&w=2000",
     "https://img.seadn.io/files/a930f3a4526dbe0fc90c6d31131cf995.png?fit=max&w=2000",
+    "https://img.seadn.io/files/5c8e110bc53e8008f6d78c3d1c0b90ef.png?fit=max&w=2000",
+    "https://img.seadn.io/files/bff909bb0d0b1a2237c799c114db4ce8.png?fit=max&w=2000",
+    "https://img.seadn.io/files/2aa5acf4692942ce9d1800a01097b228.png?fit=max&w=2000",
+    "https://img.seadn.io/files/923bc4eb1adf0142bb48133d47411e88.png?fit=max&w=2000",
+    "https://img.seadn.io/files/dbc8fa963402e5a5bed422086d88862a.png?fit=max&w=2000",
+    "https://img.seadn.io/files/a8f558b2e2196c57ad17c9ef085a7729.png?fit=max&w=2000",
+    "https://img.seadn.io/files/deb5921932241274b77f2acb0eeb9108.png?fit=max&w=2000",
   ];
 
   // useState hook to deconstructure
@@ -37,11 +45,11 @@ function Body() {
 
   useEffect(() => {
     getNftsHome();
-  }, []);
+    console.log(nftArr);
+  }, [nftArr]);
 
   return (
-    <div>
-      <h1>Hello from body</h1>
+    <div className="body">
       {nftArr.map((url, index) => (
         <Card key={index} src={url} />
       ))}

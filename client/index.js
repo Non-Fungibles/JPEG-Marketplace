@@ -7,6 +7,7 @@
 import React from "react";
 import { createRoot, render } from "react-dom/client";
 import App from "./src/App.js";
+import "../client/src/styles/index.css";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
