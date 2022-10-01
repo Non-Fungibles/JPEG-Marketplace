@@ -4,7 +4,7 @@ const apiController = {};
 
 //middleware for getting NFT's on the marketplace
 apiController.getMarket = (req, res, next) => {
-  const queryString = 'SELECT * FROM NFT WHERE status = true'
+  const queryString = 'SELECT * FROM nfts WHERE status = false'
 	db.query(queryString)
 	.then(result => {
 		res.locals.marketData = result.rows;
@@ -35,6 +35,12 @@ apiController.addNFT =(req, res, next) => {
 	// const arrayOfData = ()
 	// const queryString = `INSERT INTO NFT (name, ) `;
   // db.query(queryString, arrayOfData)
+}
+
+
+apiController.getPersonalNFT = (req, res, next) => {
+
+	
 }
 
 
