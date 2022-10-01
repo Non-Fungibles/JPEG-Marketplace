@@ -1,0 +1,35 @@
+.sidebar {
+  width: 50%;
+  /* border: 1px solid aliceblue; */
+  padding: 20px;
+  border-radius: 10px;
+  background: #363840;
+  color: aliceblue;
+  margin-right: 10px;
+}
+
+.sidebar legend {
+  background-color: #363840;
+}
+
+.sidebar fieldset {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #363840;
+}
+
+.filter-input {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #363840;
+}
+
+.sidebar img {
+  width: 15px;
+  background-color: #363840;
+}
+
+.sidebar label {
+  background-color: #363840;
+}

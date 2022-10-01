@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles/forms.css'
 
 const SignIn = () => {
   const inputRef = useRef(null);  // focus on first input field upon mounting
