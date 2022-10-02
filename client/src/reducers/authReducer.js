@@ -3,12 +3,10 @@ import ACTIONS from "../constants/constants";
 export const authReducer = (state, action) => {
   switch (action.type) {
     case ACTIONS.LOGIN:
-      console.log(action.payload)
-      return {
-        status: action.payload
-      };
+      return action.payload
     case ACTIONS.LOGOUT:
       return {
+        ...action.payload,
         status: null
       };
     default:

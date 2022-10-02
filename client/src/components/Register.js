@@ -38,13 +38,15 @@ const Register = () => {
       setErrorMessage('Password do not match');
       return;
     }
-    // making post request to login user and redirect to Wallet
+    // making post request to login user
     axios.post('/api/users/signup', { username, password })
       .then(res => {
         // maybe use localStorage to store user so if user exit browser and come back, it still remember that user,
-        localStorage.setItem('user', JSON.stringify(res.data.status));
-        dispatch({ type: ACTIONS.LOGIN, payload: res.data.status })
+        localStorage.setItem('user', JSON.stringify(res.data));
+        //  receive status object including user_id from backend, then dispatch to change auth state
+        dispatch({ type: ACTIONS.LOGIN, payload: res.data })
         setFormData(intialState);
+        // redirect to Wallet if success
         navigate('/wallet');
       })
       .catch(err => {

@@ -6,7 +6,7 @@ import axios from "axios";
 import ACTIONS from "../constants/constants";
 
 const Navbar = () => {
-  const { status, dispatch } = useContext(AuthContext);
+  const { status, user_id, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,7 +19,7 @@ const Navbar = () => {
     navigate('/');
   }
 
-  // COMMENT: need backend to send back username on /login or /signup to display in navbar
+  // COMMENT: need backend to send back user_id on /login or /signup to display in navbar
   return (
     <div id="navbar">
       <div id="logo">
@@ -35,10 +35,16 @@ const Navbar = () => {
         <span>
           <Link to="/create">Create</Link>
         </span>
+        <span>
+          <Link to="/wallet">Wallet</Link>
+        </span>
       </div>
       <div id="login-logout">
         {status ? (
-          <button className="nav-btn" onClick={handleLogout}>LOG OUT</button>
+          <>
+            <span id='user'>USER ID: {user_id}</span>
+            <button className="nav-btn" onClick={handleLogout}>LOG OUT</button>
+          </>
         ) : (
           <>
             <Link to="/login">

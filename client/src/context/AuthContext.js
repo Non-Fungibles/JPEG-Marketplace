@@ -5,7 +5,9 @@ import ACTIONS from '../constants/constants';
 export const AuthContext = createContext();
 
 const initialState = {
+    user_id: 0,
     status: null,
+    message: ''
 }
 
 export const AuthContextProvider = ({ children }) => {

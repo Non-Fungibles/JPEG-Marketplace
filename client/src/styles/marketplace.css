@@ -41,6 +41,11 @@
   animation: slide 20s linear infinite;
 }
 
+.default-display button {
+  width: 100px;
+  margin-left: 140px;
+}
+
 .market-display {
   display: flex;
   border: 1px white solid;
@@ -59,6 +64,17 @@
 
 .market-display div {
   animation: slide 20s linear infinite;
+}
+
+.market-display button {
+  display: block;
+  width: 100px;
+  margin-left: 140px;
+}
+
+/* Hide cancel for default NFT */
+.default-display button {
+  display: none;
 }
 
 @keyframes slide {

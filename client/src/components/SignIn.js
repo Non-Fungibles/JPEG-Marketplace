@@ -15,6 +15,7 @@ const SignIn = () => {
   const [formData, setFormData] = useState(intialState);
   const { username, password } = formData;
   const [errorMessage, setErrorMessage] = useState(null);  // set errorMessage if fails validation
+
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -42,10 +43,12 @@ const SignIn = () => {
           setErrorMessage('Wrong password');
           return;
         }
-        //  receive status = true from backend, then dispatch to change auth state
-        localStorage.setItem('user', JSON.stringify(res.data.status));
-        dispatch({ type: ACTIONS.LOGIN, payload: res.data.status })
+        //  receive status object including user_id from backend, then dispatch to change auth state
+        console.log(res.data)
+        localStorage.setItem('user', JSON.stringify(res.data));
+        dispatch({ type: ACTIONS.LOGIN, payload: res.data })
         setFormData(intialState);
+        // if success, redirect to user's wallet
         navigate('/wallet');
       })
       .catch(err => {
