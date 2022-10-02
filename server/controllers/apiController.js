@@ -174,7 +174,11 @@ apiController.createNFT = async (req, res, next) => {
   // db.query(queryString, arrayOfData)
   const { user_id, name, price, url, status } = req.body; //user should be an object from frontend
   // const {user_id} = req.cookie.user_id;
-  const param = [user_id, name, price, url, status];
+  
+  // COMMENT: frontend does not send price/status to backend, values should be default to
+  // 0 and false respectively. Give an error if use line 179
+  // const param = [user_id, name, price, url, status];
+  const param = [user_id, name, 0, url, false];  
   try {
     const createNewNFT = `
       INSERT INTO nfts( user_id, name, price, url, status)
