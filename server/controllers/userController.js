@@ -5,9 +5,9 @@ const userController = {};
 
 //create user
 userController.createUser = async (req, res, next) => {
-  const { username, password, money } = req.body; //user should be an object from frontend
+  const { username, password } = req.body; //user should be an object from frontend
 
-  const param = [username, password, money];
+  const param = [username, password, 100];
 
   try {
     //push the data into DB
@@ -18,8 +18,9 @@ userController.createUser = async (req, res, next) => {
     `;
 
     const result = await db.query(newCharQuery, param);
-
-    res.locals.status = { status: true, message: 'account has been created!' };
+    //console.log(result.rows[0].user_id)
+    res.locals.user_id = result.rows[0].user_id;
+    res.locals.status = { status: true, message: 'Account has been created!' };
 
     return next();
   } catch (error) {
@@ -34,7 +35,7 @@ userController.createUser = async (req, res, next) => {
 };
 
 // Sign up route: check if user already exists in database
-userController.vertifyUser = async (req, res, next) => {
+userController.verifyUser = async (req, res, next) => {
   const { username } = req.body;
 
   const param = [username];
@@ -70,6 +71,7 @@ userController.vertifyUser = async (req, res, next) => {
   }
 };
 
+//log in
 userController.loginUser = async (req, res, next) => {
   const { username, password } = req.body;
 
@@ -81,6 +83,10 @@ userController.loginUser = async (req, res, next) => {
     WHERE username = $1
     `;
     const data = await db.query(newNameQuery, param);
+
+    // setting user_id to res.locals for use in cookieController
+    res.locals.user_id = data.rows[0].user_id;  
+
     //if the password matches
     if (data.rows[0].password === password) {
       res.locals.status = { status: true, message: 'Successful Login!' };
@@ -99,5 +105,7 @@ userController.loginUser = async (req, res, next) => {
     });
   }
 };
+
+// api/users/:id
 
 module.exports = userController;

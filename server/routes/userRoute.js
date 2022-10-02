@@ -18,9 +18,9 @@ router.post(
 //this route will return true if we created a user in the database
 router.post(
 	'/signup',
-	(req,res,next) =>{console.log('in sign up route') 
+	(req, res, next) =>{console.log('in sign up route') 
 	return next()},
-	userController.vertifyUser, 
+	userController.verifyUser, 
 	userController.createUser,
 	cookieController.setUsernameCookie,
   (req, res) => {
@@ -39,6 +39,8 @@ router.delete(
 
 
 //retrieves all NFT's that belong to a certain user upon successful sign in.
-router.get('/', /*apiController middleware here  */)
+router.get('/userinventory/:user_id',apiController.getNFTforOneUser , (req,res) => {
+	return res.status(200).json(res.locals.inventoryForOneUser)
+})
 
 module.exports = router;
