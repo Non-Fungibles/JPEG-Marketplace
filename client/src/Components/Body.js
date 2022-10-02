@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import "../styles/body.css";
 
+
 function Body() {
   // arr to store initial nfts displayed on home render
   const homeNfts = [

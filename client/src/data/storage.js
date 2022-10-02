@@ -1,4 +1,4 @@
-const homeNfts = [
+export const homeNfts = [
   {
     NFT_id: 0,
     name: 'CryptoPunk #7376',

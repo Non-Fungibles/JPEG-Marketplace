@@ -2,6 +2,11 @@
   position: relative;
   overflow: hidden;
 } */
+/* .marketplace {
+  overflow: hidden;
+  display: flex;
+  margin: 0 auto;
+} */
 
 .marketplace h1 {
   color: aliceblue;
@@ -19,16 +24,48 @@
   background: #202225;
   border: 1px white solid;
   border-radius: 10px;
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
   padding: 30px;
   margin: 40px 20px;
+  overflow: hidden;
+}
+
+.default-display:hover > div {
+  -webkit-animation-play-state: paused !important;
+  -moz-animation-play-state: paused !important;
+  -o-animation-play-state: paused !important;
+  animation-play-state: paused !important;
+}
+
+.default-display div {
+  animation: slide 20s linear infinite;
 }
 
 .market-display {
   display: flex;
   border: 1px white solid;
   border-radius: 10px;
-  overflow-x: scroll;
+  overflow: hidden;
   padding: 30px;
   margin: 40px 20px;
+}
+
+.market-display:hover > div {
+  -webkit-animation-play-state: paused !important;
+  -moz-animation-play-state: paused !important;
+  -o-animation-play-state: paused !important;
+  animation-play-state: paused !important;
+}
+
+.market-display div {
+  animation: slide 20s linear infinite;
+}
+
+@keyframes slide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-1500px, 0, 0); /* The image width */
+  }
 }

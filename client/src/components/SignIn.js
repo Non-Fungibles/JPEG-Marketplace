@@ -27,14 +27,14 @@ const SignIn = () => {
     }));
   };
 
+  // add click handler to button 
   const handleSignIn = (e) => {
     e.preventDefault();
 
-    // making post request to login user and redirect to homepage if successful
+    // making POST request api/users/login, passing in { username, password }. If success(res is true, MAYBE need a document.cookie), redirect to homepage (navigate('/wallet'))
     // if false, generate error
-    // if true, navigate('/homepoage') we have user's info and can make a GET reuqest to retrieve users' NFTs
 
-    // navigate("/userwallet");
+    // navigate("/wallet");
   };
 
   return (
