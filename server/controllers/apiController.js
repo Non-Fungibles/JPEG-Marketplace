@@ -28,7 +28,8 @@ apiController.getMarket = (req, res, next) => {
 
 //get user's own NFT list
 apiController.getNFTforOneUser = async (req, res, next) => {
-  const { user_id } = req.params;
+  const user_id = Number(req.cookies.user_id); // use req.cookies to get user_id instead of req.params
+  // const { user_id } = req.params;
   const param = [user_id];
 
   try {
