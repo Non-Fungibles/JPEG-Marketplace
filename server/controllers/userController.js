@@ -20,7 +20,11 @@ userController.createUser = async (req, res, next) => {
     const result = await db.query(newCharQuery, param);
     //console.log(result.rows[0].user_id)
     res.locals.user_id = result.rows[0].user_id;
-    res.locals.status = { status: true, message: 'Account has been created!' };
+    res.locals.status = { 
+      user_id: result.rows[0].user_id,
+      status: true, 
+      message: 'Account has been created!'
+    };
 
     return next();
   } catch (error) {
@@ -89,11 +93,20 @@ userController.loginUser = async (req, res, next) => {
 
     //if the password matches
     if (data.rows[0].password === password) {
-      res.locals.status = { status: true, message: 'Successful Login!' };
+      // COMMENT: send user_id back to easily distinguish different users' cards
+      // res.locals.status = { status: true, message: 'Successful Login!' };
+      res.locals.status = {
+        user_id: data.rows[0].user_id,
+        status: true,
+        message: 'Successful Login!'
+      }
     } else {
-      res.locals.status = { status: false, message: 'Wrong Password!' };
+      // res.locals.status = { status: false, message: 'Wrong Password!' };
+      res.locals.status = {
+        status: false,
+        message: 'Wrong Password!'
+      }
     }
-
     return next();
   } catch (error) {
     return next({
