@@ -7,3 +7,23 @@
   width: 200px;
   height: 200px;
 }
+
+#banner {
+  width: 100%;
+  height: 300px;
+  border: 1px white solid;
+}
+
+#pfp {
+  position: absolute;
+  top: 200px;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+#pfp span {
+  color: aliceblue;
+  margin-top: 10px;
+  font-size: 1.5rem;
+}
