@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { CardsContext } from "../context/CardsContext";
 import Cardmp from "./Cardmp";
-import { homeNfts } from "../data/storage";
+import { homeNfts, NFTsHero } from "../data/storage";
 import ACTIONS from "../constants/constants";
 import "../styles/marketplace.css";
 
@@ -30,7 +30,7 @@ function Marketplace() {
       {/* <div className="default-container"> */}
       <h2>Browse</h2>
       <div className="default-display">
-        {homeNfts.map((nft, index) => (
+        {NFTsHero.map((nft, index) => (
           <Cardmp
             key={index}
             src={nft.url}

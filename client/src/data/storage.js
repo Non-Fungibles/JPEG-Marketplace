@@ -204,4 +204,84 @@ export const homeNfts = [
   },
 ]
 
+export const NFTsHero = [
+  {
+    nft_id: 0,
+    name: "Okay Bear #7241",
+    price: 10,
+    url: "https://solanart.io/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdemo%2Fimage%2Ffetch%2Fh_500%2Fhttps%3A%2F%2Fbafybeidlnolmcounih2tpcfo5re5kd3zqnmmykwyor3lmu35xcpnxjg6h4.ipfs.nftstorage.link%2F7240.png%3Fext%3Dpng&w=3840&q=75",
+    status: false,
+  },
+  {
+    nft_id: 1,
+    name: "Boner #2818",
+    price: 20,
+    url: "https://solanart.io/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdemo%2Fimage%2Ffetch%2Fh_500%2Fhttps%3A%2F%2Farweave.net%2FEx9_N2bGkMHDQLCjOqHDq5QGSYpBPD7e8fHRgVwRHVo%3Fext%3Dpng&w=3840&q=75",
+    status: false,
+  },
+  {
+    nft_id: 2,
+    name: "EmoHead #4385: Sad Heba",
+    price: 5,
+    url: "https://i.seadn.io/gae/OWEBln_pSK0NIcvFAKNpqvU4TFxNTkDBAeuIWmBwSY1mpd-JN-ICzBxcZe1cQMJmyoBWjYvAuF20YgOgFtiYgOAqyuk5YutzUdxBgQ?auto=format&w=1000",
+    status: false,
+  },
+  {
+    nft_id: 3,
+    name: "CAMARADERIE",
+    price: 7,
+    url: "https://i.seadn.io/gae/C799X5K2NZDsqObIP1wGAU-DuPSPBRmRORnovA_PE_a8c94SQL9ZNxNGSjqtlCAj8kDB7t2uvuw9wWf-gkDa7F-sUQM08sxBTWW9kA?auto=format&w=1000",
+    status: false,
+  },
+  {
+    nft_id: 4,
+    name: "RENGA #8567",
+    price: 3,
+    url: "https://img.seadn.io/files/0ded8de17e5860bd7179859ee6e3ae49.jpg?fit=max&w=1000",
+    status: false,
+  },
+  {
+    nft_id: 5,
+    name: "Lazy Ape Yacht Club #4870",
+    price: 50,
+    url: "https://img.seadn.io/files/afafb400b61d635a73ea835722583e8e.png?fit=max&w=1000",
+    status: false,
+  },
+  {
+    nft_id: 6,
+    name: "CryptoPunk #4004",
+    price: 30,
+    url: "https://i.seadn.io/gae/P9eD2qd4rS8Q_O6YOogz7brPPbXwKgHv4O5tvvMAOovqr5HHU-TcMbe3q7EqmHm7ya1eeyUJpbezgwsXaFuNzUMDS2MtXGTaYJxqbA?auto=format&w=1000",
+    status: false,
+  },
+  {
+    nft_id: 7,
+    name: "Lazy Ape Yacht Club #1416",
+    price: 13,
+    url: "https://img.seadn.io/files/cd36c4e444975311c4b2d3c114a21c1d.png?fit=max&w=1000",
+    status: false,
+  },
+  {
+    nft_id: 8,
+    name: "Kitaro #7344",
+    price: 25,
+    url: "https://img.seadn.io/files/24bd14491916b00fe3c3a84a0d1240d4.png?fit=max&w=1000",
+    status: false,
+  },
+  {
+    nft_id: 9,
+    name: "CryptoPunk #7376",
+    price: 28,
+    url: "https://img.seadn.io/files/5c8e110bc53e8008f6d78c3d1c0b90ef.png?fit=max&w=2000",
+    status: false,
+  },
+  {
+    nft_id: 10,
+    name: "CryptoPunk #7376",
+    price: 18,
+    url: "https://img.seadn.io/files/2a04c47bd1b91c807130b9a9d47380d9.png?fit=max&w=2000",
+    status: false,
+  },
+]
+
 export default homeNfts;
