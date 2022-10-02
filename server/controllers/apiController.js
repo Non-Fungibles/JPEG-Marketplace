@@ -4,7 +4,13 @@ const apiController = {};
 
 //middleware for getting NFT's on the marketplace
 apiController.getMarket = (req, res, next) => {
-  const queryString = 'SELECT * FROM nfts WHERE status = true';
+  //SELECT nfts.*, users.username AS username FROM nfts WHERE nfts.status = true INNER JOIN users ON nfts.user_id = users.user_id
+  const queryString = `
+  SELECT nfts.*, users.username AS username 
+  FROM nfts 
+  INNER JOIN users 
+  ON nfts.user_id = users.user_id
+  WHERE nfts.status = true `;
   db.query(queryString)
     .then((result) => {
       console.log(result);
@@ -20,43 +26,199 @@ apiController.getMarket = (req, res, next) => {
     });
 };
 
-apiController.sellNFT = async (req, res, next) => {
-  //this is where we set the status of said nft to true;
-
-  const { nfts_id, user_id, price, status } = req.body; //user should be an object from frontend
-
-  const param = [nfts_id, user_id, price, status];
+//get user's own NFT list
+apiController.getNFTforOneUser = async (req, res, next) => {
+  const { user_id } = req.params;
+  const param = [user_id];
 
   try {
-    const sellQuery = `UPDATE nfts 
-  SET status = $4, user_id = $2, price = $3 
-  WHERE nfts_id = $1`;
+    const selectQueryfromSameUser = `
+  SELECT * FROM nfts WHERE user_id = $1
+  `;
 
-    const updatedNFTowner = await de.query(sellQuery, param);
-    res.locals.data = updatedNFTowner;
+    const inventoryForOneUser = await db.query(selectQueryfromSameUser, param);
+    //console.log(inventoryForOneUser);
+    res.locals.inventoryForOneUser = inventoryForOneUser.rows;
     return next();
   } catch (error) {
     return next({
-      log: 'Express error in apiController.sellNFT middleware',
+      log: 'Express error in apiController.getNFTforOneUser middleware',
       status: 400,
       message: {
-        err: `apiController.sellNFT: ERROR: ${error}`,
+        err: `apiController.getNFTforOneUser: ERROR: ${error}`,
       },
     });
   }
 };
 
-apiController.stopSellNFT = (req, res, next) => {
-  //this is where we set the status of said NFT to false
+//buyNFT
+apiController.buyNFTfromMarketplace = (req, res, next) => {
+  //user_id = buyer id
+  const {nft_id, user_id} = req.body;
+  const param = [nft_id, user_id];
+  let nftData = {};
+  let buyerData= {};
+    //checks to see if the nft in question is for sale
+    const queryString = `
+    SELECT * FROM nfts WHERE nft_id = $1 AND status = true
+    `;
+    db.query(queryString, [nft_id])
+    .then((data) => {
+      if(!data){
+        return next({log: 'Express error in apiController.buyNFTfromMarketplace middleware',
+          message: {err: 'NFT is not for sale or does not exist'}})
+      }
+       nftData = data.rows[0];
+       console.log(nftData);
+       res.locals.nftData = nftData;
+      //if we reach here the nft is for sale
+     db.query('SELECT * FROM users WHERE user_id = $1', [user_id])
+     .then((response) => {
+       buyerData = response.rows[0]; 
+       console.log(buyerData);
+       res.locals.buyerData = buyerData;
+       //checks if the buyer has enough money to buy the nft
+        if (buyerData.money >= nftData.price){
+          //change the ownership of nft to the buyer
+          const updateQueryString = `UPDATE nfts SET user_id = $2, status = false WHERE nft_id = $1`;
+          db.query(updateQueryString, param)
+          .then((data) =>{
+
+           return next();
+        })
+      }
+      else{
+        return next({log: 'not enough money', message: {err: 'Buyer does not have enough money'}})
+      }
+      
+    })
+})
+
 };
 
-apiController.addNFT = (req, res, next) => {
+// apiController.exchangeMoney = (req, res, next) => {
+  
+// }
+//subtract money from the buyer
+//increase the seller's money
+//return the updated object
+//seller.user.id, money,   buyer.user.id,money
+
+
+// Update NFT, return a new updated NFT object to frontend
+apiController.sellNFTtoMarketplace = async (req, res, next) => {
+  //this is where we set the status of said nft to true;
+
+  const { nft_id, user_id, price, status } = req.body; //user should be an object from frontend
+  // const {user_id} = req.cookie.user_id;
+  const param = [nft_id, user_id, price, status];
+  //req.cookie.username=username of the person logged it
+  if (user_id !== req.cookies.user_id) {
+    return next({ status: false, message: 'wrong user' });
+  }
+  try {
+    const sellQuery = `UPDATE nfts 
+    SET status = $4,price = $3 
+    WHERE nft_id = $1 AND user_id = $2 
+    RETURNING *`;
+    //check if user_id is equal to res.cookie.user_id
+    const updatedNFTowner = await db.query(sellQuery, param);
+
+    res.locals.nftData = updatedNFTowner.rows[0];
+    return next();
+  } catch (error) {
+    return next({
+      log: 'Express error in apiController.sellNFTtoMarketplace middleware',
+      status: 400,
+      message: {
+        err: `apiController.sellNFTtoMarketplace: ERROR: ${error}`,
+      },
+    });
+  }
+};
+
+apiController.stopSellNFT = async (req, res, next) => {
+  //this is where we set the status of said NFT to false
+  const { nft_id, user_id } = req.body; //user should be an object from frontend
+  // const {user_id} = req.cookie.user_id;
+  const param = [nft_id, user_id];
+  if (user_id !== req.cookies.user_id) {
+    return next({ status: false, message: 'wrong user' });
+  }
+  try {
+    const cancelSellQuery = `UPDATE nfts 
+    SET status = false,
+    WHERE nft_id = $1 AND user_id = $2 
+    RETURNING *`;
+    //check if user_id is equal to res.cookie.user_id
+    const cancelSell = await db.query(cancelSellQuery, param);
+
+    res.locals.nftData = cancelSell.rows[0];
+    return next();
+  } catch (error) {
+    return next({
+      log: 'Express error in apiController.stopSellNFT middleware',
+      status: 400,
+      message: {
+        err: `apiController.stopSellNFT: ERROR: ${error}`,
+      },
+    });
+  }
+};
+
+apiController.createNFT = async (req, res, next) => {
   //by default status is false
   // const arrayOfData = ()
   // const queryString = `INSERT INTO NFT (name, ) `;
   // db.query(queryString, arrayOfData)
+  const { user_id, name, price, url, status } = req.body; //user should be an object from frontend
+  // const {user_id} = req.cookie.user_id;
+  const param = [user_id, name, price, url, status];
+  try {
+    const createNewNFT = `
+      INSERT INTO nfts( user_id, name, price, url, status)
+      VALUES($1,$2, $3,$4,$5)
+      RETURNING *;`;
+
+    const createdNewNFT = await db.query(createNewNFT, param);
+
+    res.locals.newNFT = createdNewNFT.rows[0];
+    return next();
+  } catch (error) {
+    return next({
+      log: 'Express error in apiController.createNFT middleware',
+      status: 400,
+      message: {
+        err: `apiController.createNFT: ERROR: ${error}`,
+      },
+    });
+  }
 };
 
-apiController.getPersonalNFT = (req, res, next) => {};
+apiController.deleteNFT = async (req, res, next) => {
+  const { user_id, nft_id } = req.body;
+  const param = [user_id, nft_id];
+  // if (user_id !== req.cookies.user_id) {
+  //   return next({ status: false, message: 'wrong user' });
+  // }
+  try {
+    const deleteQuery = `
+    DELETE FROM nfts
+    WHERE user_id = $1 AND nft_id = $2
+    `;
+    const data = await db.query(deleteQuery, param)
+   
+    res.locals.status = { status: true, message: 'Successfully Deleted!' };
+    return next();
+  } catch (error) {
+    return next({
+      log: 'Express error in apiController.deleteNFT middleware',
+      status: 400,
+      message: {
+        err: `apiController.deleteNFT: ERROR: ${error}`,
+      },
+    });
+  }
+};
 
 module.exports = apiController;
