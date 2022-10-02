@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import ACTIONS from "../constants/constants";
 import { CardsContext } from "../context/CardsContext";
 import "../styles/wallet.css";
 import Cardmp from "./Cardmp";
@@ -9,44 +10,41 @@ function Wallet() {
 
   // get current user from userContext (checking cookies)
   // have access to user_id, username
-
-  //   useEffect(() => {
-  //   after user successfully sign in, make a GET request to retrieve user's NFT inside useEffect(), pass user_id to back end => data received back will be an array of NFTs that belong to the users
-  //   dispatch LOAD_CARD
-
-  //   })
-
-  // destructure context
-  const { nftArr, dispatch } = useContext(CardsContext);
-
-  const checkExistingCookie = () => {
-    let cookieVal;
-    const cookieArr = document.cookie.split("; ");
-    // document.cookie = "favorite_food=tripe; SameSite=None;
-    for (let i = 0; i < cookieArr.length; i++) {
-      const cookie = cookieArr[i];
-      const splitIndex = cookieArr.indexOf("=");
-      if (cookie.slice(0, splitIndex) === "user_id") {
-        cookieVal = cookie.slice(splitIndex + 1);
-        break;
-      }
-    }
-    return cookieVal;
-  };
-  // you need to be able to store the user_id from cookie right ? yea
-  // so maybe loop thry cookieArr,
-  // u can finish it for me
-  // yo so do we need to invoke checkExistingCookie in useEffect?
-
-  // user_id=123123123;
+    
+    // destructure context
+    const { nftArr, dispatch } = useContext(CardsContext);
+    // console.log('nftArr');
+    // console.log(nftArr);
+    
+    //   after user successfully sign in, make a GET request to retrieve user's NFT inside useEffect(), pass user_id to back end => data received back will be an array of NFTs that belong to the users
   useEffect(() => {
     console.log("inside useEffect");
-    const cookieVal = checkExistingCookie();
-    fetch(`/api/userinventory/${cookieVal}`)
+    fetch(`/api/users/userinventory/`)
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: LOAD_CARDS, payload: data });
-      });
+        console.log('inside fetch on the front end')
+
+        // dummy data to test GET request 
+        // data.push({
+        //   NFT_id: 0,
+        //   name: 'CryptoPunk #7376',
+        //   price: 0,
+        //   url: "https://img.seadn.io/files/03cf0db41d87259848c2d04c30837ff3.png?fit=max&w=2000",
+        //   status: false,
+        //   user_id: "Ray Kim"
+        // },
+        // {
+        //   NFT_id: 1,
+        //   name: 'CryptoPunk #7376',
+        //   price: 0,
+        //   url: "https://img.seadn.io/files/eff478e7644c71f95a13e94e43422f95.png?fit=max&w=2000",
+        //   status: false,
+        //   user_id: "Ray Kim"
+        // })
+
+        dispatch({ type: ACTIONS.LOAD_CARDS, payload: data });
+      })
+      .catch(err => console.log(err));
   }, []);
 
   return (
@@ -60,9 +58,7 @@ function Wallet() {
         </div>
       </div>
       <div className="user-nft">
-        {nftArr.map((nft, index) => {
-          <Cardmp src={nft.url} key={index} />;
-        })}
+        {nftArr.map((nft, index) => <Cardmp src={nft.url} key={index} />)}
       </div>
     </div>
   );
