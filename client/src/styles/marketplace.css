@@ -50,12 +50,13 @@
   display: flex;
   border: 1px white solid;
   border-radius: 10px;
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow-y: scroll;
   padding: 30px;
   margin: 40px 20px;
 }
 
-.market-display:hover > div {
+/* .market-display:hover > div {
   -webkit-animation-play-state: paused !important;
   -moz-animation-play-state: paused !important;
   -o-animation-play-state: paused !important;
@@ -64,7 +65,7 @@
 
 .market-display div {
   animation: slide 20s linear infinite;
-}
+} */
 
 .market-display button {
   display: block;

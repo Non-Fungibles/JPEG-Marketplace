@@ -130,16 +130,16 @@ apiController.exchangeMoney = (req, res, next) => {
 apiController.sellNFTtoMarketplace = async (req, res, next) => {
   //this is where we set the status of said nft to true;
 
-  const { nft_id, user_id, price, status } = req.body; //user should be an object from frontend
+  const { nft_id, user_id, price} = req.body; //user should be an object from frontend
   // const {user_id} = req.cookie.user_id;
-  const param = [nft_id, user_id, price, status];
+  const param = [nft_id, user_id, price];
   //req.cookie.username=username of the person logged it
-  if (user_id !== req.cookies.user_id) {
-    return next({ status: false, message: 'wrong user' });
-  }
-  try {
+  // if (user_id !== req.cookies.user_id) {
+  //   return next({ status: false, message: 'wrong user' });
+  // }
+  try { 
     const sellQuery = `UPDATE nfts 
-    SET status = $4,price = $3 
+    SET status = true, price = $3 
     WHERE nft_id = $1 AND user_id = $2 
     RETURNING *`;
     //check if user_id is equal to res.cookie.user_id
@@ -163,18 +163,16 @@ apiController.stopSellNFT = async (req, res, next) => {
   const { nft_id, user_id } = req.body; //user should be an object from frontend
   // const {user_id} = req.cookie.user_id;
   const param = [nft_id, user_id];
-  if (user_id !== req.cookies.user_id) {
-    return next({ status: false, message: 'wrong user' });
-  }
+  // if (user_id !== req.cookies.user_id) {
+  //   return next({ status: false, message: 'wrong user' });
+  // }
   try {
-    const cancelSellQuery = `UPDATE nfts 
-    SET status = false,
-    WHERE nft_id = $1 AND user_id = $2 
-    RETURNING *`;
+    const cancelSellQuery = `UPDATE nfts SET status = false WHERE nft_id = $1 AND user_id = $2 RETURNING *;`;
     //check if user_id is equal to res.cookie.user_id
     const cancelSell = await db.query(cancelSellQuery, param);
-
+    console.log(cancelSell);
     res.locals.nftData = cancelSell.rows[0];
+    // console.log(res.locals.nftData)
     return next();
   } catch (error) {
     return next({
@@ -197,8 +195,8 @@ apiController.createNFT = async (req, res, next) => {
   
   // COMMENT: frontend does not send price/status to backend, values should be default to
   // 0 and false respectively. Give an error if use line 179
-  // const param = [user_id, name, price, url, status];
-  const param = [user_id, name, 0, url, false];  
+   const param = [user_id, name, price, url, status];
+  //const param = [user_id, name, 0, url, false];  
   try {
     const createNewNFT = `
       INSERT INTO nfts( user_id, name, price, url, status)
@@ -230,10 +228,11 @@ apiController.deleteNFT = async (req, res, next) => {
     const deleteQuery = `
     DELETE FROM nfts
     WHERE user_id = $1 AND nft_id = $2
+    RETURNING *
     `;
     const data = await db.query(deleteQuery, param);
+    res.locals.nftData = data.rows[0];
 
-    res.locals.status = { status: true, message: 'Successfully Deleted!' };
     return next();
   } catch (error) {
     return next({

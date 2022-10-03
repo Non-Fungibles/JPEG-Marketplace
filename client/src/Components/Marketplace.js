@@ -50,6 +50,7 @@ function Marketplace() {
             price={nft.price}
             nft_user_id={nft.user_id}
             username={nft.username}
+            nft_id={nft.nft_id}
           />
         ))}
       </div>

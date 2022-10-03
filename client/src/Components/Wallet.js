@@ -43,7 +43,7 @@ function Wallet() {
       </div>
       <h1>Collections</h1>
       <div className="user-nft">
-        {nftArr.map((nft, index) => <CardWallet key={index} src={nft.url} name={nft.name} />)}
+        {nftArr.map((nft, index) => <CardWallet nft_id={nft.nft_id} key={index} src={nft.url} name={nft.name} />)}
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ router.patch(
 );
 
 router.delete('/', apiController.deleteNFT, (req, res) => {
-  return res.status(200).json(res.locals.status);
+  return res.status(200).json(res.locals.nftData);
 });
 
 //this route will add an NFT to the database
