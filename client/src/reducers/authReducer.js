@@ -8,7 +8,13 @@ export const authReducer = (state, action) => {
       return {
         ...action.payload,
         status: null
-      };
+      }
+    case ACTIONS.UPDATE_BALANCE:
+      console.log(action.payload);
+      return {
+        ...state,
+        balance: action.payload 
+      }
     default:
       return state;
   }

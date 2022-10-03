@@ -22,6 +22,7 @@ userController.createUser = async (req, res, next) => {
     res.locals.user_id = result.rows[0].user_id;
     res.locals.status = { 
       user_id: result.rows[0].user_id,
+      balance: result.ros[0].money,
       status: true, 
       message: 'Account has been created!'
     };
@@ -97,6 +98,7 @@ userController.loginUser = async (req, res, next) => {
       // res.locals.status = { status: true, message: 'Successful Login!' };
       res.locals.status = {
         user_id: data.rows[0].user_id,
+        balance: data.rows[0].money,
         status: true,
         message: 'Successful Login!'
       }
@@ -121,7 +123,7 @@ userController.loginUser = async (req, res, next) => {
 
 userController.getBalance = async(req, res, next) => {
  const user_id = Number(req.cookies.user_id); // use req.cookies to get user_id instead of req.params
-  //  const { user_id } = req.body;
+  // const { user_id } = req.body;
   const param = [user_id];
   try{
     const selectBalanceQueryfromUser = `

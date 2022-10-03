@@ -37,7 +37,6 @@ apiController.getNFTsforOneUser = async (req, res, next) => {
   `;
 
     const inventoryForOneUser = await db.query(selectQueryfromSameUser, param);
-    //console.log(inventoryForOneUser);
     res.locals.inventoryForOneUser = inventoryForOneUser.rows;  
     return next();
   } catch (error) {
@@ -54,7 +53,8 @@ apiController.getNFTsforOneUser = async (req, res, next) => {
 //buyNFT
 apiController.buyNFTfromMarketplace = (req, res, next) => {
   //user_id = buyer id
-  const { nft_id, user_id } = req.body;
+   const user_id = Number(req.cookies.user_id)
+  const { nft_id } = req.body;
   const param = [nft_id, user_id];
   let nftData = {};
   let buyerData = {};
@@ -79,7 +79,7 @@ apiController.buyNFTfromMarketplace = (req, res, next) => {
         //console.log(buyerData);
         res.locals.buyerData = buyerData;
         //checks if the buyer has enough money to buy the nft
-        if (buyerData.money >= nftData.price) {
+        if (Number(buyerData.money) >= Number(nftData.price)) {
           //change the ownership of nft to the buyer
           const updateQueryString = `UPDATE nfts SET user_id = $2, status = false WHERE nft_id = $1 RETURNING *`;
           db.query(updateQueryString, param).then((data) => {
@@ -88,7 +88,7 @@ apiController.buyNFTfromMarketplace = (req, res, next) => {
           });
         } else {
           return next({
-            log: 'not enough money',
+            log: 'not enough money backend',
             message: { err: 'Buyer does not have enough money' },
           });
         }
@@ -104,12 +104,14 @@ apiController.exchangeMoney = (req, res, next) => {
   let newBalance = money - price;
   const param = [user_id,newBalance];
 
+   //update the new balance for the buyer in the DB
   const newBalanceBuyerQuery = `
     UPDATE users 
     SET money = $2
     WHERE user_id = $1 
     RETURNING *
   `;
+  // update the new balance for the seller in the DB
   const newBalanceSellerQuery = `
   UPDATE users
   SET money = money + ${price} 
@@ -118,8 +120,9 @@ apiController.exchangeMoney = (req, res, next) => {
   `;
   db.query(newBalanceBuyerQuery,param)
     .then((data)=> {
+      //returning the new balance for the buyer to frontend
+      res.locals.balance = data.rows[0].money;
       db.query(newBalanceSellerQuery, [seller_id])
-      
       .then(data => next())
     })
 };
@@ -131,8 +134,8 @@ apiController.exchangeMoney = (req, res, next) => {
 // Update NFT, return a new updated NFT object to frontend
 apiController.sellNFTtoMarketplace = async (req, res, next) => {
   //this is where we set the status of said nft to true;
-
-  const { nft_id, user_id, price} = req.body; //user should be an object from frontend
+  const user_id = Number(req.cookies.user_id)
+  const { nft_id, price} = req.body; //user should be an object from frontend
   // const {user_id} = req.cookie.user_id;
   const param = [nft_id, user_id, price];
   //req.cookie.username=username of the person logged it
@@ -140,6 +143,7 @@ apiController.sellNFTtoMarketplace = async (req, res, next) => {
   //   return next({ status: false, message: 'wrong user' });
   // }
   try { 
+    //change the status for NFTs so it will be on markelplace for sale
     const sellQuery = `UPDATE nfts 
     SET status = true, price = $3 
     WHERE nft_id = $1 AND user_id = $2 
@@ -162,7 +166,8 @@ apiController.sellNFTtoMarketplace = async (req, res, next) => {
 
 apiController.stopSellNFT = async (req, res, next) => {
   //this is where we set the status of said NFT to false
-  const { nft_id, user_id } = req.body; //user should be an object from frontend
+  const user_id = Number (req.cookies.user_id)
+  const { nft_id } = req.body; //user should be an object from frontend
   // const {user_id} = req.cookie.user_id;
   const param = [nft_id, user_id];
   // if (user_id !== req.cookies.user_id) {
@@ -192,7 +197,8 @@ apiController.createNFT = async (req, res, next) => {
   // const arrayOfData = ()
   // const queryString = `INSERT INTO NFT (name, ) `;
   // db.query(queryString, arrayOfData)
-  const { user_id, name, url } = req.body; //user should be an object from frontend
+  const user_id = Number(req.cookies.user_id)
+  const { name, url } = req.body; //user should be an object from frontend
   // const {user_id} = req.cookie.user_id;
   
   // COMMENT: frontend does not send price/status to backend, values should be default to
@@ -221,7 +227,8 @@ apiController.createNFT = async (req, res, next) => {
 };
 
 apiController.deleteNFT = async (req, res, next) => {
-  const { user_id, nft_id } = req.body;
+  const user_id = Number(req.cookies.user_id)
+  const { nft_id } = req.body;
   const param = [user_id, nft_id];
   // if (user_id !== req.cookies.user_id) {
   //   return next({ status: false, message: 'wrong user' });

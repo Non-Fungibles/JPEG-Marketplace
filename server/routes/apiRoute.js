@@ -28,7 +28,7 @@ router.patch(
   apiController.buyNFTfromMarketplace,
   apiController.exchangeMoney,
   (req, res) => {
-    return res.status(200).json(res.locals.updatedNFT);
+    return res.status(200).json({nftData: res.locals.updatedNFT, balance: res.locals.balance});
   }
 );
 

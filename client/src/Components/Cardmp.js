@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/card.css";
 import eth from "../assets/ethereum.png";
 import { AuthContext } from "../context/AuthContext";
@@ -11,16 +11,24 @@ function Cardmp(props) {
   const { src, name, price, nft_user_id, username, nft_id } = props;
 
   // get user_id from authContext, and display BUY button on Card if user_id !== nft_user_id
-  const { user_id } = useContext(AuthContext);
+  const { user_id, balance } = useContext(AuthContext);
+  const authDispatch = useContext(AuthContext).dispatch;
+  
   const { dispatch } = useContext(CardsContext);
+  const [errorMessage, setErrorMessage] = useState('');
   
   // clickHandler for buy-btn
   const buyHandler = () => {
+    // make sure user has enough money to buy this NFT
+    if (Number(balance) < Number(price)) {
+      setErrorMessage('Not enough money');
+      return;
+    }
     fetch("/api/buyNFTfromMarketplace", {
       method: "PATCH",
       body: JSON.stringify({
         nft_id: nft_id,
-        user_id: user_id,
+        // user_id: user_id,
       }),
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
@@ -29,7 +37,10 @@ function Cardmp(props) {
     .then(res => res.json())
     .then((data) => {
       // filter out this nft from marketplace once it is bought by another user
-      dispatch({ type: ACTIONS.DELETE_CARD, payload: data })
+      dispatch({ type: ACTIONS.DELETE_CARD, payload: data.nftData })
+      
+      // dispatch an action to update user's balance
+      authDispatch({ type: ACTIONS.UPDATE_BALANCE, payload: data.balance })
     })
     .catch(err => console.log(err))
   }
@@ -40,7 +51,7 @@ function Cardmp(props) {
       method: "PATCH",
       body: JSON.stringify({
         nft_id: nft_id,
-        user_id: user_id,
+        // user_id: user_id,
       }),
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
@@ -70,6 +81,7 @@ function Cardmp(props) {
       ) : (
         <button onClick={() => removeMPhandler()} className="remove-btn">Remove</button>
       )}
+      {errorMessage && <span>{errorMessage}</span>}
     </div>
   );
 }

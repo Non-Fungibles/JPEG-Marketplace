@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 
 const initialState = {
     user_id: 0,
+    balance: 0,
     status: null,
     message: ''
 }

@@ -37,7 +37,7 @@ const CreateForm = () => {
   // COMMENT: price is a string, should it be a number?
   const handleCreateNFT = (e) => {
     e.preventDefault();
-    axios.post('/api/add', { user_id, name, url })
+    axios.post('/api/add', { name, url }) //user_id will be grabbed from cookie on be
       .then(res => {
         // received newly created NFT obj from backend, dispatch action to update state
         dispatch({ type: ACTIONS.CREATE_CARD, payload: res.data })
