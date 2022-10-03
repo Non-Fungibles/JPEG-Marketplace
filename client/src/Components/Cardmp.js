@@ -15,11 +15,8 @@ function Cardmp(props) {
   const { dispatch } = useContext(CardsContext);
   
   // clickHandler for buy-btn
-  
-
-  // clickHandler for remove-btn from mp
-  const removeMPhandler = () => {
-    fetch("/api/cancelNFTfromMarketplace", {
+  const buyHandler = () => {
+    fetch("/api/buyNFTfromMarketplace", {
       method: "PATCH",
       body: JSON.stringify({
         nft_id: nft_id,
@@ -31,6 +28,27 @@ function Cardmp(props) {
     })
     .then(res => res.json())
     .then((data) => {
+      // filter out this nft from marketplace once it is bought by another user
+      dispatch({ type: ACTIONS.DELETE_CARD, payload: data })
+    })
+    .catch(err => console.log(err))
+  }
+
+  // clickHandler for remove-btn from mp
+  const removeMPhandler = () => {
+    fetch("/api/cancelNFTfromMarketplace/", {
+      method: "PATCH",
+      body: JSON.stringify({
+        nft_id: nft_id,
+        user_id: user_id,
+      }),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      // users remove their own nft from marketplace
       dispatch({ type: ACTIONS.DELETE_CARD, payload: data })
     })
     .catch(err => console.log(err))
@@ -48,7 +66,7 @@ function Cardmp(props) {
       {username && <span className="owner">Owner: {username}</span>}
       
       {user_id !== nft_user_id ? (
-        <button className="buy-btn">Buy now</button>
+        <button onClick={() => buyHandler()} className="buy-btn">Buy now</button>
       ) : (
         <button onClick={() => removeMPhandler()} className="remove-btn">Remove</button>
       )}

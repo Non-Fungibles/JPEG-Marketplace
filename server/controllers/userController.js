@@ -119,6 +119,29 @@ userController.loginUser = async (req, res, next) => {
   }
 };
 
-// api/users/:id
+userController.getBalance = async(req, res, next) => {
+ const user_id = Number(req.cookies.user_id); // use req.cookies to get user_id instead of req.params
+  //  const { user_id } = req.body;
+  const param = [user_id];
+  try{
+    const selectBalanceQueryfromUser = `
+    SELECT users.money FROM users WHERE user_id = $1 
+  `;
+  
+  const data = await db.query(selectBalanceQueryfromUser, param)
+    res.locals.balance = data.rows[0];
+    return next();
+  }
+  catch(error) {
+    return next({
+      log: 'Express error in userController.getBalance middleware',
+      status: 400,
+      message: {
+        err: `userController.getBalance: ERROR: ${error}`
+    }})
+  }
+
+  
+}
 
 module.exports = userController;

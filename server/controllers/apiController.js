@@ -26,26 +26,26 @@ apiController.getMarket = (req, res, next) => {
 };
 
 //get user's own NFT list
-apiController.getNFTforOneUser = async (req, res, next) => {
+apiController.getNFTsforOneUser = async (req, res, next) => {
   const user_id = Number(req.cookies.user_id); // use req.cookies to get user_id instead of req.params
-  // const { user_id } = req.params;
+  //  const { user_id } = req.body;
   const param = [user_id];
 
   try {
     const selectQueryfromSameUser = `
-  SELECT * FROM nfts WHERE user_id = $1
+    SELECT * FROM nfts WHERE user_id = $1 
   `;
 
     const inventoryForOneUser = await db.query(selectQueryfromSameUser, param);
     //console.log(inventoryForOneUser);
-    res.locals.inventoryForOneUser = inventoryForOneUser.rows;
+    res.locals.inventoryForOneUser = inventoryForOneUser.rows;  
     return next();
   } catch (error) {
     return next({
-      log: 'Express error in apiController.getNFTforOneUser middleware',
+      log: 'Express error in apiController.getNFTsforOneUser middleware',
       status: 400,
       message: {
-        err: `apiController.getNFTforOneUser: ERROR: ${error}`,
+        err: `apiController.getNFTsforOneUser: ERROR: ${error}`,
       },
     });
   }
@@ -81,8 +81,9 @@ apiController.buyNFTfromMarketplace = (req, res, next) => {
         //checks if the buyer has enough money to buy the nft
         if (buyerData.money >= nftData.price) {
           //change the ownership of nft to the buyer
-          const updateQueryString = `UPDATE nfts SET user_id = $2, status = false WHERE nft_id = $1`;
+          const updateQueryString = `UPDATE nfts SET user_id = $2, status = false WHERE nft_id = $1 RETURNING *`;
           db.query(updateQueryString, param).then((data) => {
+            res.locals.updatedNFT = data.rows[0];
             return next();
           });
         } else {
@@ -118,6 +119,7 @@ apiController.exchangeMoney = (req, res, next) => {
   db.query(newBalanceBuyerQuery,param)
     .then((data)=> {
       db.query(newBalanceSellerQuery, [seller_id])
+      
       .then(data => next())
     })
 };
