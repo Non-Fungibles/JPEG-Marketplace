@@ -26,7 +26,7 @@ router.patch(
 router.patch(
   '/buyNFTfromMarketplace',
   apiController.buyNFTfromMarketplace,
-  // apiController.exchangeMoney,
+  apiController.exchangeMoney,
   (req, res) => {
     return res.status(200).json();
   }

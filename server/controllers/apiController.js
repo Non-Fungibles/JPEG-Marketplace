@@ -13,7 +13,6 @@ apiController.getMarket = (req, res, next) => {
   WHERE nfts.status = true `;
   db.query(queryString)
     .then((result) => {
-      console.log(result);
       res.locals.marketData = result.rows;
       next();
     })
@@ -54,56 +53,77 @@ apiController.getNFTforOneUser = async (req, res, next) => {
 //buyNFT
 apiController.buyNFTfromMarketplace = (req, res, next) => {
   //user_id = buyer id
-  const {nft_id, user_id} = req.body;
+  const { nft_id, user_id } = req.body;
   const param = [nft_id, user_id];
   let nftData = {};
-  let buyerData= {};
-    //checks to see if the nft in question is for sale
-    const queryString = `
+  let buyerData = {};
+  //checks to see if the nft in question is for sale
+  const queryString = `
     SELECT * FROM nfts WHERE nft_id = $1 AND status = true
     `;
-    db.query(queryString, [nft_id])
-    .then((data) => {
-      if(!data){
-        return next({log: 'Express error in apiController.buyNFTfromMarketplace middleware',
-          message: {err: 'NFT is not for sale or does not exist'}})
-      }
-       nftData = data.rows[0];
-       console.log(nftData);
-       res.locals.nftData = nftData;
-      //if we reach here the nft is for sale
-     db.query('SELECT * FROM users WHERE user_id = $1', [user_id])
-     .then((response) => {
-       buyerData = response.rows[0]; 
-       console.log(buyerData);
-       res.locals.buyerData = buyerData;
-       //checks if the buyer has enough money to buy the nft
-        if (buyerData.money >= nftData.price){
+  db.query(queryString, [nft_id]).then((data) => {
+    if (!data) {
+      return next({
+        log: 'Express error in apiController.buyNFTfromMarketplace middleware',
+        message: { err: 'NFT is not for sale or does not exist' },
+      });
+    }
+    nftData = data.rows[0];
+    //console.log(nftData);
+    res.locals.nftData = nftData;
+    //if we reach here the nft is for sale
+    db.query('SELECT * FROM users WHERE user_id = $1', [user_id]).then(
+      (response) => {
+        buyerData = response.rows[0];
+        //console.log(buyerData);
+        res.locals.buyerData = buyerData;
+        //checks if the buyer has enough money to buy the nft
+        if (buyerData.money >= nftData.price) {
           //change the ownership of nft to the buyer
           const updateQueryString = `UPDATE nfts SET user_id = $2, status = false WHERE nft_id = $1`;
-          db.query(updateQueryString, param)
-          .then((data) =>{
-
-           return next();
-        })
+          db.query(updateQueryString, param).then((data) => {
+            return next();
+          });
+        } else {
+          return next({
+            log: 'not enough money',
+            message: { err: 'Buyer does not have enough money' },
+          });
+        }
       }
-      else{
-        return next({log: 'not enough money', message: {err: 'Buyer does not have enough money'}})
-      }
-      
-    })
-})
-
+    );
+  });
 };
 
-// apiController.exchangeMoney = (req, res, next) => {
+apiController.exchangeMoney = (req, res, next) => {
+  const { money, user_id } = res.locals.buyerData;
+  const { price } = res.locals.nftData;
+  const seller_id = res.locals.nftData.user_id;
+  let newBalance = money - price;
+  const param = [user_id,newBalance];
+
+  const newBalanceBuyerQuery = `
+    UPDATE users 
+    SET money = $2
+    WHERE user_id = $1 
+    RETURNING *
+  `;
+  const newBalanceSellerQuery = `
+  UPDATE users
+  SET money = money + ${price} 
+  Where user_id = $1
   
-// }
+  `;
+  db.query(newBalanceBuyerQuery,param)
+    .then((data)=> {
+      db.query(newBalanceSellerQuery, [seller_id])
+      .then(data => next())
+    })
+};
 //subtract money from the buyer
 //increase the seller's money
 //return the updated object
 //seller.user.id, money,   buyer.user.id,money
-
 
 // Update NFT, return a new updated NFT object to frontend
 apiController.sellNFTtoMarketplace = async (req, res, next) => {
@@ -206,8 +226,8 @@ apiController.deleteNFT = async (req, res, next) => {
     DELETE FROM nfts
     WHERE user_id = $1 AND nft_id = $2
     `;
-    const data = await db.query(deleteQuery, param)
-   
+    const data = await db.query(deleteQuery, param);
+
     res.locals.status = { status: true, message: 'Successfully Deleted!' };
     return next();
   } catch (error) {
