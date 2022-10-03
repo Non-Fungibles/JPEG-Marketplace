@@ -144,7 +144,7 @@ apiController.sellNFTtoMarketplace = async (req, res, next) => {
     RETURNING *`;
     //check if user_id is equal to res.cookie.user_id
     const updatedNFTowner = await db.query(sellQuery, param);
-
+    //console.log(updatedNFTowner.rows[0].nft_id)
     res.locals.nftData = updatedNFTowner.rows[0];
     return next();
   } catch (error) {

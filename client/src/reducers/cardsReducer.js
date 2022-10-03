@@ -11,14 +11,23 @@ export const cardsReducer = (state, action) => {
       return {
         nftArr: [action.payload, ...state.nftArr],
       };
-    case ACTIONS.UPDATE_CARD:
+    case ACTIONS.SET_CARD_FOR_SALE:
       const newArr = state.nftArr.map((card) => {
         if (card.nft_id === action.payload.nft_id) {
-          card = action.payload;
+          return {
+            ...card,
+            price: action.payload.price,
+            status: action.payload.status
+          }
+        } else {
+          return card;
         }
       });
+      console.log('newArr: ');
+      console.log(newArr);
+
       return {
-        nftArr: newArr,
+        nftArr: newArr.filter(arr => arr.status === false),
       };
 
     case ACTIONS.DELETE_CARD:

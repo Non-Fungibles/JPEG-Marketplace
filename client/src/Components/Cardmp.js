@@ -17,7 +17,7 @@ function Cardmp(props) {
   // clickHandler for buy-btn
   
 
-  // clickHandler for remove-btn from 
+  // clickHandler for remove-btn from mp
   const removeMPhandler = () => {
     fetch("/api/cancelNFTfromMarketplace", {
       method: "PATCH",

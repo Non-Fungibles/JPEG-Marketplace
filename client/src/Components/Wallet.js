@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 function Wallet() {
   // destructure context - get user's NFT collections
   const { nftArr, dispatch } = useContext(CardsContext);
+  console.log('inside Wallet');
+  console.log(nftArr);
 
   // get current user status from AuthContext (checking cookies)
   const { status, user_id } = useContext(AuthContext);
@@ -43,7 +45,7 @@ function Wallet() {
       </div>
       <h1>Collections</h1>
       <div className="user-nft">
-        {nftArr.map((nft, index) => <CardWallet nft_id={nft.nft_id} key={index} src={nft.url} name={nft.name} />)}
+        {nftArr.map((nft, index) => <CardWallet nft_id={nft.nft_id} key={index} src={nft.url} name={nft.name} status={nft.status} />)}
       </div>
     </div>
   );
