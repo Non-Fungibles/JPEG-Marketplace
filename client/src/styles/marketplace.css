@@ -8,6 +8,10 @@
   margin: 0 auto;
 } */
 
+.marketplace {
+  display: flex;
+}
+
 .marketplace h1 {
   color: aliceblue;
   margin-left: 20px;
@@ -17,6 +21,10 @@
   color: aliceblue;
   margin-left: 20px;
   margin-top: 20px;
+}
+
+.mp-displays {
+  width: 100%;
 }
 
 .default-display {
@@ -54,6 +62,7 @@
   overflow-y: scroll;
   padding: 30px;
   margin: 40px 20px;
+  width: 80%;
 }
 
 /* .market-display:hover > div {
@@ -85,4 +94,8 @@
   100% {
     transform: translate3d(-1500px, 0, 0); /* The image width */
   }
+}
+
+.onsale {
+  display: flex;
 }

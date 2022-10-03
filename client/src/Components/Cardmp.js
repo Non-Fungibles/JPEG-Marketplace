@@ -72,7 +72,7 @@ function Cardmp(props) {
       <br></br>
       <span>
         Price: {price}
-        <img src={eth} id="eth" />
+        <img src={eth} id="eth-card" />
       </span>
       {username && <span className="owner">Owner: {username}</span>}
       

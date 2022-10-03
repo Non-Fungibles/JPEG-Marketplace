@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import CreateForm from "./Components/CreateForm";
 import Marketplace from "./Components/Marketplace";
 import Wallet from "./Components/Wallet";
+import Exchange from "./Components/Exchange";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/exchange" element={<Exchange />}/>
       </Routes>
     </>
   );

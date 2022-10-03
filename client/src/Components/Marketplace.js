@@ -4,6 +4,7 @@ import Cardmp from "./Cardmp";
 import { homeNfts, NFTsHero } from "../data/storage";
 import ACTIONS from "../constants/constants";
 import "../styles/marketplace.css";
+import Sidebar from "./Sidebar";
 
 function Marketplace() {
   // NFT data schema: nft_id, name, price, url, status, user_id
@@ -20,45 +21,49 @@ function Marketplace() {
         });
     }
 
-    const intervalID = setInterval(getNFTsFromMarket, 5000);
+    // fetch new data every 2s
+    const intervalID = setInterval(getNFTsFromMarket, 2000);
     
     return () => clearInterval(intervalID);
   }, []);
 
-  //   const fetchData = () => {
-
-  //   };
-  // could invoke fetchData to constantly check for state change
 
   return (
     <div className="marketplace">
-      <h1>Marketplace</h1>
       {/* <div className="default-container"> */}
-      <h2>Browse</h2>
-      <div className="default-display">
-        {NFTsHero.map((nft, index) => (
-          <Cardmp
-            key={index}
-            src={nft.url}
-            name={nft.name}
-            price={nft.price}
-            username={nft.username}
-          />
-        ))}
-      </div>
-      <h2>On sale now!</h2>
-      <div className="market-display">
-        {nftArr.map((nft, index) => (
-          <Cardmp
-            key={index}
-            src={nft.url}
-            name={nft.name}
-            price={nft.price}
-            nft_user_id={nft.user_id}
-            username={nft.username}
-            nft_id={nft.nft_id}
-          />
-        ))}
+      {/* <Sidebar /> */}
+      <div className="mp-displays">
+      <h1>Marketplace</h1>
+        <h2>Browse</h2>
+        <div className="default-display">
+          {NFTsHero.map((nft, index) => (
+            <Cardmp
+              key={index}
+              src={nft.url}
+              name={nft.name}
+              price={nft.price}
+              username={nft.username}
+            />
+          ))}
+        </div>
+        <h2>On sale now!</h2>
+        <div className="onsale">
+            <Sidebar />
+            <div className="market-display">
+              {nftArr.map((nft, index) => (
+              <Cardmp
+                key={index}
+                src={nft.url}
+                name={nft.name}
+                price={nft.price}
+                nft_user_id={nft.user_id}
+                username={nft.username}
+                nft_id={nft.nft_id}
+              />
+          ))}
+        </div>
+        </div>
+        
       </div>
     </div>
   );

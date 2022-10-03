@@ -35,6 +35,7 @@ function Body() {
     "https://img.seadn.io/files/620ffcbb6067836370ce3ca273b4ce09.png?fit=max&w=2000",
     "https://img.seadn.io/files/2a04c47bd1b91c807130b9a9d47380d9.png?fit=max&w=2000",
     "https://img.seadn.io/files/1d7cf7614dd5d4b5a39ef2987ed628d4.png?fit=max&w=2000",
+    "https://i.seadn.io/gae/OWEBln_pSK0NIcvFAKNpqvU4TFxNTkDBAeuIWmBwSY1mpd-JN-ICzBxcZe1cQMJmyoBWjYvAuF20YgOgFtiYgOAqyuk5YutzUdxBgQ?auto=format&w=1000"
   ];
 
   // useState hook to deconstructure

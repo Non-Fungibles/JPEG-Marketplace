@@ -10,7 +10,7 @@
 
 #banner {
   width: 100%;
-  height: 350px;
+  height: 380px;
   border: 1px white solid;
 }
 
@@ -47,4 +47,15 @@
 
 input {
   color: white;
+}
+
+#deposit {
+  cursor: pointer;
+  border: 1px solid aliceblue;
+  padding: 5px;
+  border-radius: 10px;
+  /* font-size: .8rem; */
+  width: 80px;
+  margin-top: 10px;
+  text-align: center;
 }

@@ -52,3 +52,9 @@ a {
   display: block;
   color: white;
 }
+
+#eth {
+  width: 15px;
+  height: 15px;
+  background: #202225;
+}

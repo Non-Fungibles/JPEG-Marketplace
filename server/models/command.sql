@@ -2,7 +2,7 @@ CREATE TABLE users(
 user_id serial PRIMARY KEY,
 username varchar(255) NOT NULL UNIQUE,
 password varchar(255) NOT NULL,
-money integer NOT NULL
+money numeric NOT NULL
 )
 
 CREATE TABLE nfts(

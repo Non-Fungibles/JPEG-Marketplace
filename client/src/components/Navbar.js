@@ -44,7 +44,7 @@ const Navbar = () => {
         {status ? (
           <>
             <span id='user'>USER ID: {user_id}</span>
-            <span id='user'>{balance}<img src={eth}/></span>
+            <span id='user'>{balance}<img id="eth" src={eth}/></span>
             <button className="nav-btn" onClick={handleLogout}>LOG OUT</button>
           </>
         ) : (

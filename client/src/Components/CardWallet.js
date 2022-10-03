@@ -66,15 +66,11 @@ function CardWallet(props) {
     .then(data => {
       console.log(data)
       dispatch({type: ACTIONS.SET_CARD_FOR_SALE, payload: data})
+      setForSale(false);
     })
     .catch(err => console.log(err))
   }
 
-  // useEffect(() =>{
-  //   if(status !== forSale) {
-      
-  //   }
-  // }, [status])
   
   return (
     <div className="card">
@@ -82,12 +78,18 @@ function CardWallet(props) {
       <span className="card-name">{name}</span>
       <br></br>
       {forSale && (
-      <input type='text' id='price' name='price' value={priceForSale} onChange={(e) => setPriceForSale(e.target.value)} />
+        <div className="pop-up">
+          <input type='text' id='price' name='price' value={priceForSale} onChange={(e) => setPriceForSale(e.target.value)} />
+          <button className="pop-up-btn" onClick={() => setForSale(!forSale)}>Cancel</button>
+          <button onClick={sellHandler} className="pop-up-btn" disabled={priceForSale.length === 0}>List For Sale</button>
+        </div>
       )}
-      {!status && <button onClick={() => sellHandler()} className="sell-btn">List For Sale</button>}
-      {!status && <button onClick={() => setForSale(true)} className="sell-btn">Sell</button>}
-      {status && <button className="sell-btn" onClick={removeMPhandler}>Remove from Market</button>}
-      <button onClick={() => deleteNftHandler()} className="sell-btn">Delete</button>
+      
+      {status ? 
+      (<button className="remove-from-market" onClick={removeMPhandler}>Remove from Market</button>) : 
+      (<button onClick={() => setForSale(true)} className="sell-btn">Sell</button>)}
+
+      <button onClick={deleteNftHandler} className="sell-btn">Delete</button>
     </div>
   );
 }

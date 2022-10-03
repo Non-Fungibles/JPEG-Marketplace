@@ -1,12 +1,12 @@
 .sidebar {
-  width: 100%;
+  width: 200px;
   height: 100%;
   /* border: 1px solid aliceblue; */
   padding: 20px;
   border-radius: 10px;
   background: #363840;
   color: aliceblue;
-  margin: 5px 10px;
+  margin: 40px 10px;
 }
 
 .sidebar legend {
