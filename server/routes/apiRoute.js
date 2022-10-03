@@ -16,6 +16,7 @@ router.patch(
   //COMMENT: Maybe use nft_id in the request.params
   '/sellNFTtoMarketplace',
   apiController.sellNFTtoMarketplace,
+  
   (req, res) => {
     return res.status(200).json(res.locals.nftData);
   }

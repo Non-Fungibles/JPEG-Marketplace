@@ -11,12 +11,18 @@ function Marketplace() {
 
   // fetch data from backend endpoint where markets status is true
   useEffect(() => {
-    fetch("/api/markets")
-      .then((res) => res.json())
-      .then((data) => {
-        // filter out data we want to display (user, name of NFT, price)
-        dispatch({ type: ACTIONS.LOAD_CARDS, payload: data });
-      });
+    function getNFTsFromMarket() {
+      fetch("/api/markets")
+        .then((res) => res.json())
+        .then((data) => {
+          // filter out data we want to display (user, name of NFT, price)
+          dispatch({ type: ACTIONS.LOAD_CARDS, payload: data });
+        });
+    }
+
+    const intervalID = setInterval(getNFTsFromMarket, 5000);
+    
+    return () => clearInterval(intervalID);
   }, []);
 
   //   const fetchData = () => {
