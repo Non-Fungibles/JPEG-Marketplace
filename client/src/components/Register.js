@@ -1,7 +1,9 @@
 import axios from 'axios';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/forms.css'
+import ACTIONS from '../constants/constants';
 
 const Register = () => {
   const inputRef = useRef(null);  // focus on first input field upon mounting
@@ -13,7 +15,10 @@ const Register = () => {
   
   const [formData, setFormData] = useState(intialState);
   const { username, password, password2 } = formData;
-  // const [errorMessage, setErrorMessage] = useState(null);  // set errorMessage if passwords do not match
+  const [errorMessage, setErrorMessage] = useState(null);  // set errorMessage if passwords do not match
+
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // focus on first input field upon mounting
   useEffect(() => {
@@ -33,8 +38,21 @@ const Register = () => {
       setErrorMessage('Password do not match');
       return;
     }
-
-    // making post request to login user and redirect to homepage
+    // making post request to login user
+    axios.post('/api/users/signup', { username, password })
+      .then(res => {
+        // maybe use localStorage to store user so if user exit browser and come back, it still remember that user,
+        localStorage.setItem('user', JSON.stringify(res.data));
+        //  receive status object including user_id from backend, then dispatch to change auth state
+        dispatch({ type: ACTIONS.LOGIN, payload: res.data })
+        setFormData(intialState);
+        // redirect to Wallet if success
+        navigate('/wallet');
+      })
+      .catch(err => {
+        const error = err.response.data.message;
+        setErrorMessage(error);
+      })
   };
 
   return (
@@ -53,7 +71,7 @@ const Register = () => {
           <label htmlFor="password2">Confirm Password</label>
           <input type="password" id='password2' name='password2' value={password2} onChange={handleChangeForm}/>
         </div>
-        {/* {errorMessage && <div className='error-message login'>{errorMessage}</div>} */}
+        {errorMessage && <div className='error-message login'>{errorMessage}</div>}
         <button type='submit'>REGISTER</button>
         <div type='button' id='sign-in'><Link to='/login'>Sign in</Link></div>
         <div id='copyright'>NFT Marketplace © 2022</div>

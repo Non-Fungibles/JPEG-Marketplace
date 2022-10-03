@@ -58,7 +58,7 @@ function Body() {
 
   useEffect(() => {
     getNftsHome();
-    console.log(nftArr);
+    // console.log(nftArr);
   }, [nftArr]);
 
   return (

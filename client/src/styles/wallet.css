@@ -27,3 +27,21 @@
   margin-top: 10px;
   font-size: 1.5rem;
 }
+
+.profile {
+  margin-bottom: 30px;
+}
+
+.user-nft {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  max-width: 1400px;
+  margin: 40px auto;
+  gap: 20px;
+}
+
+.sell-btn:hover {
+  cursor: pointer;
+  background: rgb(97, 90, 90);
+}
+

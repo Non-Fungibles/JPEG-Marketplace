@@ -39,7 +39,11 @@ router.delete(
 
 
 //retrieves all NFT's that belong to a certain user upon successful sign in.
-router.get('/userinventory/:user_id',apiController.getNFTforOneUser , (req,res) => {
+// COMMENT: maybe we don't need :user_id because we can access user_id from req.cookies.user_id 
+// router.get('/userinventory/:user_id',apiController.getNFTforOneUser , (req,res) => {
+// 	return res.status(200).json(res.locals.inventoryForOneUser)
+// })
+router.get('/userinventory/',apiController.getNFTforOneUser , (req,res) => {
 	return res.status(200).json(res.locals.inventoryForOneUser)
 })
 

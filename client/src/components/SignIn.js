@@ -1,7 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/forms.css";
+import ACTIONS from "../constants/constants";
 
 const SignIn = () => {
   const inputRef = useRef(null); // focus on first input field upon mounting
@@ -12,8 +14,10 @@ const SignIn = () => {
 
   const [formData, setFormData] = useState(intialState);
   const { username, password } = formData;
-  // const [errorMessage, setErrorMessage] = useState(null);  // set errorMessage if fails validation
-  // const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(null);  // set errorMessage if fails validation
+
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // focus on first input field upon mounting
   useEffect(() => {
@@ -31,10 +35,26 @@ const SignIn = () => {
   const handleSignIn = (e) => {
     e.preventDefault();
 
-    // making POST request api/users/login, passing in { username, password }. If success(res is true, MAYBE need a document.cookie), redirect to homepage (navigate('/wallet'))
-    // if false, generate error
-
-    // navigate("/wallet");
+    // making POST request api/users/login, passing in { username, password }. If success redirect to Wallet. if false, generate error
+    axios.post('/api/users/login', { username, password })
+      .then(res => {        
+        // if wrong username was entered, display error message 
+        if (res.data.status === false) {
+          setErrorMessage('Wrong password');
+          return;
+        }
+        //  receive status object including user_id from backend, then dispatch to change auth state
+        console.log(res.data)
+        localStorage.setItem('user', JSON.stringify(res.data));
+        dispatch({ type: ACTIONS.LOGIN, payload: res.data })
+        setFormData(intialState);
+        // if success, redirect to user's wallet
+        navigate('/wallet');
+      })
+      .catch(err => {
+        const error = err.response.data.err;
+        setErrorMessage(error);
+      })
   };
 
   return (
@@ -62,7 +82,7 @@ const SignIn = () => {
             onChange={handleChangeForm}
           />
         </div>
-        {/* {errorMessage && <div className='error-message login'>{errorMessage}</div>} */}
+        {errorMessage && <div className='error-message login'>{errorMessage}</div>}
         <button type="submit">SIGN IN</button>
         <div type="button" id="register">
           <Link to="/register">Don&apos;t have an account? Sign up</Link>
