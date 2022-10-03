@@ -10,7 +10,9 @@ apiController.getMarket = (req, res, next) => {
   FROM nfts 
   INNER JOIN users 
   ON nfts.user_id = users.user_id
-  WHERE nfts.status = true `;
+  WHERE nfts.status = true
+  ORDER BY nfts.insert_time DESC
+	`;
   db.query(queryString)
     .then((result) => {
       res.locals.marketData = result.rows;
@@ -145,7 +147,7 @@ apiController.sellNFTtoMarketplace = async (req, res, next) => {
   try { 
     //change the status for NFTs so it will be on markelplace for sale
     const sellQuery = `UPDATE nfts 
-    SET status = true, price = $3 
+    SET status = true, price = $3, insert_time = CURRENT_TIMESTAMP  
     WHERE nft_id = $1 AND user_id = $2 
     RETURNING *`;
     //check if user_id is equal to res.cookie.user_id
