@@ -256,4 +256,39 @@ apiController.deleteNFT = async (req, res, next) => {
   }
 };
 
+//adding the exchanged ethereum to the wallet
+apiController.addEthereumToWallet = async (req, res, next) => {
+	//const user_id = Number(req.cookies.user_id)
+	const {user_id} = req.body
+  const {ethereum} = req.body
+	const param = [user_id, ethereum];
+	//send db query to change the users money to increase by the req.body.money
+	try{
+		const addMoneyToWallet =`
+    UPDATE users
+    SET money = money + $2
+    Where user_id = $1
+		RETURNING *
+    `
+		const data = await db.query(addMoneyToWallet, param);
+		console.log(data)
+		res.locals.status = {
+			user_id: data.rows[0].user_id,
+			balance: data.rows[0].money,
+			status: true,
+			message: 'Successfully added to Wallet!'
+		}
+		return next()
+	}
+	catch(error){
+    return next({
+      log: 'Express error in apiController.addEthereumToWallet middleware',
+      status: 400,
+      message: {
+        err: `apiController.addEthereumToWallet: ERROR: ${error}`,
+      },
+	})
+}
+}
+
 module.exports = apiController;
