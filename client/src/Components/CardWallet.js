@@ -12,9 +12,25 @@ function CardWallet(props) {
 
   const [forSale, setForSale] = useState(false)
   const [priceForSale, setPriceForSale] = useState('');
-  console.log('status');
-  console.log(status);
-  const [newStatus, setNewStatus] = useState(status)
+
+   // clickHandler for remove-btn from mp
+   const removeMPhandler = () => {
+    fetch("/api/cancelNFTfromMarketplace", {
+      method: "PATCH",
+      body: JSON.stringify({
+        nft_id: nft_id,
+        user_id: user_id,
+      }),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      dispatch({ type: ACTIONS.UPDATE_CARD, payload: data })
+    })
+    .catch(err => console.log(err))
+  }
 
   const deleteNftHandler = () => {
     fetch("/api", {
@@ -49,8 +65,7 @@ function CardWallet(props) {
     .then(res => res.json())
     .then(data => {
       console.log(data)
-      dispatch({type: ACTIONS.SET_CARD_FOR_SALE_CARD, payload: data})
-      setNewStatus(!newStatus);
+      dispatch({type: ACTIONS.SET_CARD_FOR_SALE, payload: data})
     })
     .catch(err => console.log(err))
   }
@@ -69,9 +84,9 @@ function CardWallet(props) {
       {forSale && (
       <input type='text' id='price' name='price' value={priceForSale} onChange={(e) => setPriceForSale(e.target.value)} />
       )}
-      {!newStatus && <button onClick={() => sellHandler()} className="sell-btn">List For Sale</button>}
-      {!newStatus && <button onClick={() => setForSale(true)} className="sell-btn">Sell</button>}
-      {newStatus && <button className="sell-btn">Remove from Market</button>}
+      {!status && <button onClick={() => sellHandler()} className="sell-btn">List For Sale</button>}
+      {!status && <button onClick={() => setForSale(true)} className="sell-btn">Sell</button>}
+      {status && <button className="sell-btn" onClick={removeMPhandler}>Remove from Market</button>}
       <button onClick={() => deleteNftHandler()} className="sell-btn">Delete</button>
     </div>
   );
