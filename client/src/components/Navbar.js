@@ -4,9 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
 import axios from "axios";
 import ACTIONS from "../constants/constants";
+import eth from "../assets/ethereum.png"
 
 const Navbar = () => {
-  const { status, user_id, dispatch } = useContext(AuthContext);
+  const { status, user_id, balance, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -43,6 +44,7 @@ const Navbar = () => {
         {status ? (
           <>
             <span id='user'>USER ID: {user_id}</span>
+            <span id='user'>{balance}<img src={eth}/></span>
             <button className="nav-btn" onClick={handleLogout}>LOG OUT</button>
           </>
         ) : (
