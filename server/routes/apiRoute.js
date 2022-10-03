@@ -50,6 +50,12 @@ router.post('/add', apiController.createNFT, (req, res) => {
   return res.status(200).json(res.locals.newNFT);
 });
 
+//this route will fetch the current USD to Etherium exchange rate.
+router.patch('/addMoney', apiController.addEthereumToWallet, (req, res) => {
+	return res.status(200).json(res.locals.status);
+})
+
+
 //routes login/signup requests to userRoute router
 router.use('/users', userRoute);
 
