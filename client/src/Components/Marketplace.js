@@ -9,6 +9,7 @@ import Sidebar from "./Sidebar";
 function Marketplace() {
   // NFT data schema: nft_id, name, price, url, status, user_id
   const { nftArr, dispatch } = useContext(CardsContext);
+  // console.log(nftArr);  
 
   // fetch data from backend endpoint where markets status is true
   useEffect(() => {

@@ -17,3 +17,5 @@ user_id integer
 
 ALTER TABLE nfts ADD CONSTRAINT nfts_fk0 FOREIGN KEY (user_id) REFERENCES users(user_id)
 
+ALTER TABLE nfts
+  ADD insert_time timestamp default NOW()  

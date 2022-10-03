@@ -22,7 +22,7 @@ function Cardmp(props) {
     // make sure user has enough money to buy this NFT
     if (Number(balance) < Number(price)) {
       setErrorMessage('Not enough money');
-      return;
+      retur
     }
     fetch("/api/buyNFTfromMarketplace", {
       method: "PATCH",
@@ -82,6 +82,7 @@ function Cardmp(props) {
         <button onClick={() => removeMPhandler()} className="remove-btn">Remove</button>
       )}
       {errorMessage && <span>{errorMessage}</span>}
+      
     </div>
   );
 }

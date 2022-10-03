@@ -258,8 +258,8 @@ apiController.deleteNFT = async (req, res, next) => {
 
 //adding the exchanged ethereum to the wallet
 apiController.addEthereumToWallet = async (req, res, next) => {
-	//const user_id = Number(req.cookies.user_id)
-	const {user_id} = req.body
+	const user_id = Number(req.cookies.user_id)
+	//const {user_id} = req.body
   const {ethereum} = req.body
 	const param = [user_id, ethereum];
 	//send db query to change the users money to increase by the req.body.money

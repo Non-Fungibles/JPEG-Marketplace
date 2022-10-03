@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import "../styles/exchange.css"
+import ACTIONS from '../constants/constants';
+import { AuthContext } from '../context/AuthContext';
 
 function Exchange() {
   const [priceOfEth, setPriceOfEth] = useState(0);
   const [amtUSD, setAmtUSD] = useState(0);
+
+  const { dispatch } = useContext(AuthContext);
 
   let amtEth = 0;
     
@@ -25,21 +29,22 @@ function Exchange() {
   const handleExchange = () => {
     console.log(amtEth);
     // patch req to the backend
-    // fetch("/api/", {
-    //     method: "PATCH",
-    //     body: JSON.stringify({
-    //       nft_id: nft_id,
-    //       // user_id: user_id,     dont need unless caught in cookies
-    //     }),
-    //     headers: {
-    //       "Content-Type": "application/json; charset=UTF-8"
-    //     }
-    //   })
-    //   .then(res => res.json())
-    //   .then((data) => {
-    //     console.log(data)
-    //   })
-    //   .catch(err => console.log(err))
+    fetch("/api/addMoney", {
+        method: "PATCH",
+        body: JSON.stringify({
+          ethereum: amtEth,
+          // user_id: user_id,     
+        }),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8"
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        console.log(data)
+        dispatch({ type: ACTIONS.UPDATE_BALANCE, payload: data.balance })
+      })
+      .catch(err => console.log(err))
   }
 
   // Assigned within component to have access in render
@@ -54,7 +59,7 @@ function Exchange() {
         <label htmlFor='usd'>USD</label>
         <input id="usd" type="text" value={amtUSD} onChange={handleOnChange}/>
         <label htmlFor='ethereum'>ETH</label>
-        <input id="ethereum" type="text" value={amtEth || 0}/>
+        <input readOnly id="ethereum" type="text" value={amtEth || 0}/>
         <button onClick={handleExchange}>Convert</button>
       </div>
     </div>

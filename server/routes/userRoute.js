@@ -44,7 +44,7 @@ router.delete(
 // router.get('/userinventory/:user_id',apiController.getNFTforOneUser , (req,res) => {
 // 	return res.status(200).json(res.locals.inventoryForOneUser)
 // })
-router.get('/userinventory/',apiController.getNFTsforOneUser, userController.getBalance, (req,res) => {
+router.get('/userinventory',apiController.getNFTsforOneUser, userController.getBalance, (req,res) => {
 	return res.status(200).json({ nftArr: res.locals.inventoryForOneUser, balance: res.locals.balance })
 })
 
