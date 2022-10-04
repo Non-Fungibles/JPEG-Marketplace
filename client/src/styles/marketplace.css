@@ -38,6 +38,10 @@
   overflow: hidden;
 }
 
+.default-display #time {
+  display: none;
+}
+
 .default-display:hover > div {
   -webkit-animation-play-state: paused !important;
   -moz-animation-play-state: paused !important;

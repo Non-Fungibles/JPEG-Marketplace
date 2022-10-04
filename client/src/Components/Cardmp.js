@@ -4,11 +4,13 @@ import eth from "../assets/ethereum.png";
 import { AuthContext } from "../context/AuthContext";
 import ACTIONS from "../constants/constants";
 import { CardsContext } from "../context/CardsContext";
+import { formatInTimeZone } from 'date-fns-tz';
+import moment from "moment";
 
 // feature: everybody can see buy button, but if owner see REMOVE
 
 function Cardmp(props) {
-  const { src, name, price, nft_user_id, username, nft_id } = props;
+  const { src, name, price, nft_user_id, username, nft_id, timeLeft } = props;
 
   // get user_id from authContext, and display BUY button on Card if user_id !== nft_user_id
   const { user_id, balance } = useContext(AuthContext);
@@ -82,7 +84,7 @@ function Cardmp(props) {
         <button onClick={() => removeMPhandler()} className="remove-btn">Remove</button>
       )}
       {errorMessage && <span>{errorMessage}</span>}
-      
+      {timeLeft && <span id='time'>{moment(timeLeft).fromNow()}</span>}
     </div>
   );
 }

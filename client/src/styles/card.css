@@ -110,3 +110,10 @@
   display: block;
   font-weight: bolder;
 }
+
+#time {
+  display: block;
+  margin-left: 120px;
+  margin-top: 15px;
+  font-size: .75rem;
+}

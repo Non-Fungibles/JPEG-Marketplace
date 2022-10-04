@@ -22,7 +22,7 @@ userController.createUser = async (req, res, next) => {
     res.locals.user_id = result.rows[0].user_id;
     res.locals.status = { 
       user_id: result.rows[0].user_id,
-      balance: result.ros[0].money,
+      balance: result.rows[0].money,
       status: true, 
       message: 'Account has been created!'
     };
