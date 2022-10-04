@@ -1,0 +1,43 @@
+.exchange {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: aliceblue;
+    text-align: center;
+}
+
+.exchange button {
+    color: aliceblue;
+}
+
+.conversion {
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-between;
+    margin-top: 60px;
+    border: 1px solid rgb(185, 156, 156);
+    padding: 50px;
+    font-size: 1.5rem;
+    border-radius: 10px;
+}
+
+.conversion input {
+    width: 100px;
+    border-radius: 5px;
+    border: 1px solid rgb(185, 156, 156);
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.conversion button {
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid rgb(185, 156, 156);
+    color: white;
+    width:30%;
+}
+
+.conversion button:hover {
+    cursor: pointer;
+    background: rgb(85, 76, 76);
+}

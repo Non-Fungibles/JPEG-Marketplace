@@ -1,0 +1,61 @@
+.wallet h1 {
+  margin-left: 20px;
+  color: aliceblue;
+}
+
+.wallet img {
+  width: 200px;
+  height: 200px;
+}
+
+#banner {
+  width: 100%;
+  height: 380px;
+  border: 1px white solid;
+}
+
+#pfp {
+  position: absolute;
+  top: 200px;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+#pfp span {
+  color: aliceblue;
+  margin-top: 10px;
+  font-size: 1.5rem;
+}
+
+.profile {
+  margin-bottom: 30px;
+}
+
+.user-nft {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  max-width: 1400px;
+  margin: 40px auto;
+  gap: 20px;
+}
+
+.sell-btn:hover {
+  cursor: pointer;
+  background: rgb(97, 90, 90);
+}
+
+input {
+  color: white;
+}
+
+#deposit {
+  cursor: pointer;
+  border: 1px solid aliceblue;
+  padding: 5px;
+  border-radius: 10px;
+  /* font-size: .8rem; */
+  width: 80px;
+  margin-top: 10px;
+  text-align: center;
+}

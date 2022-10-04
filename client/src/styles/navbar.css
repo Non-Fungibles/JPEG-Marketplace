@@ -1,0 +1,60 @@
+/**********************
+NAVBAR
+***********************/
+a {
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+#navbar {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  margin-bottom: 50px;
+}
+
+#logo {
+  flex: 1;
+  color: white;
+}
+
+#navigation {
+  display: flex;
+  justify-content: center;
+  gap: 130px;
+  color: white;
+}
+
+#login-logout {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-btn {
+  padding: 8px 20px;
+  border: 1px solid white;
+  border-radius: 50px;
+  color: white
+}
+
+.nav-btn:hover {
+  cursor: pointer;
+  background: rgb(85, 76, 76);
+}
+
+#navbar #user {
+  display: block;
+  color: white;
+}
+
+#eth {
+  width: 15px;
+  height: 15px;
+  background: #202225;
+}
