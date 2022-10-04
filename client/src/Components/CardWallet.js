@@ -19,7 +19,6 @@ function CardWallet(props) {
       method: "PATCH",
       body: JSON.stringify({
         nft_id: nft_id,
-        // user_id: user_id,
       }),
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
@@ -37,7 +36,6 @@ function CardWallet(props) {
       method: 'DELETE',
       body: JSON.stringify({
          nft_id : nft_id,
-        //  user_id : user_id
       }),
        headers: {
         "Content-Type": "application/json; charset=UTF-8"
@@ -54,7 +52,6 @@ function CardWallet(props) {
     fetch("/api/sellNFTtoMarketplace", {
       method: 'PATCH',
       body: JSON.stringify({
-        // user_id: user_id,
         nft_id: nft_id,
         price: Number(priceForSale)
       }),

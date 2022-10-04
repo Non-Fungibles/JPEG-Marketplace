@@ -18,7 +18,6 @@ function Wallet() {
   const navigate = useNavigate(); 
   
   const [balance, setBalance] = useState(0)
-  // const [openExchange, setOpenExchange] = useState(false);
 
   //   after user successfully sign in, make a GET request to retrieve user's NFT inside useEffect(), pass user_id to back end => data received back will be an array of NFTs that belong to the users
   useEffect(() => {
@@ -32,8 +31,6 @@ function Wallet() {
       .then((res) => res.json())
       .then((data) => {
         // upon receiving data from backend, dispatch actions to update state
-
-        // dispatch({ type: ACTIONS.LOAD_CARDS, payload: data });
         dispatch({ type: ACTIONS.LOAD_CARDS, payload: data.nftArr });
         setBalance(data.balance.money)
       })
@@ -44,7 +41,7 @@ function Wallet() {
     <div className="wallet">
       <h1>Wallet</h1>
       <div className="profile">
-        <div id="banner">{/* <img src="" /> */}</div>
+        <div id="banner"></div>
         <div id="pfp">
           <img src="https://i.seadn.io/gae/xurV3pY0m-T7W96hldO2EwX8UdeJiQq_6_pH8filWb2uGAqLKZs8oD4xMrTh8tdRQhq6dXOVojf8IZhvTWi5xfkltOTcffNYqY_zzw?auto=format&w=3840" />
           <span>User ID: {user_id}</span>

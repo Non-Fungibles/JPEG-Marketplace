@@ -32,8 +32,7 @@ function Exchange() {
     fetch("/api/addMoney", {
         method: "PATCH",
         body: JSON.stringify({
-          ethereum: amtEth,
-          // user_id: user_id,     
+          ethereum: amtEth,  
         }),
         headers: {
           "Content-Type": "application/json; charset=UTF-8"

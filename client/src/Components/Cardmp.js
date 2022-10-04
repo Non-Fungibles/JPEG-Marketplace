@@ -30,7 +30,6 @@ function Cardmp(props) {
       method: "PATCH",
       body: JSON.stringify({
         nft_id: nft_id,
-        // user_id: user_id,
       }),
       headers: {
         "Content-Type": "application/json; charset=UTF-8"

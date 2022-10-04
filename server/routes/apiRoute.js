@@ -13,7 +13,7 @@ router.get('/markets', apiController.getMarket, (req, res) => {
 
 //this route will update the NFT's data when bought or when the user sets the NFT up for sale or update data
 router.patch(
-  //COMMENT: Maybe use nft_id in the request.params
+
   '/sellNFTtoMarketplace',
   apiController.sellNFTtoMarketplace,
   

@@ -31,8 +31,6 @@ function Marketplace() {
 
   return (
     <div className="marketplace">
-      {/* <div className="default-container"> */}
-      {/* <Sidebar /> */}
       <div className="mp-displays">
       <h1>Marketplace</h1>
         <h2>Browse</h2>

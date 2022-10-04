@@ -18,8 +18,7 @@ cookieController.setUsernameCookie = (req, res, next) => {
 //deletes the cookie if the user logs out
 cookieController.deleteCookie = (req, res, next) => {
   res.clearCookie('user_id');
-  // res.locals.status = { status: true, message: 'Successful Logout!' };
-  // COMMENT: change to status: false for auth in front end
+
   res.locals.status = { status: false, message: 'Successful Logout!' };
   next();
 };

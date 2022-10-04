@@ -54,12 +54,10 @@ function Body() {
 
   const getNftsHome = () => {
     setNftArr(shuffleArr(homeNfts));
-    // setNftArr(homeNfts);
   };
 
   useEffect(() => {
     getNftsHome();
-    // console.log(nftArr);
   }, [nftArr]);
 
   return (

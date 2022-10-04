@@ -20,7 +20,6 @@ const Navbar = () => {
     navigate('/');
   }
 
-  // COMMENT: need backend to send back user_id on /login or /signup to display in navbar
   return (
     <div id="navbar">
       <div id="logo">
